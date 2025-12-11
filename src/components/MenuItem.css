@@ -1,0 +1,15 @@
+.menu-item {
+  border-bottom: 1px solid #ccc;
+  padding: 1rem 0;
+}
+
+.menu-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.3rem;
+  color: #d32f2f;
+}
+
+.menu-item p {
+  font-size: 0.95rem;
+  color: #555;
+}

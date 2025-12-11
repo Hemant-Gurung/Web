@@ -1,0 +1,20 @@
+[
+  {
+    "category": "Starters",
+    "items": [
+      { "name": "Garlic Bread", "price": 5.99, "description": "Fresh baked" },
+      { "name": "Soup of the Day", "price": 6.99, "description": "Chef special" }
+    ]
+  },
+  {
+    "category": "Mains",
+    "items": [
+      { "name": "Grilled Chicken", "price": 12.99, "description": "Served with veggies" },
+      { "name": "Pasta Alfredo", "price": 11.99, "description": "Creamy sauce" },
+      { "name": "Pasta Alfredo", "price": 11.99, "description": "Creamy sauce" },
+      { "name": "Pasta Alfredo", "price": 11.99, "description": "Creamy sauce" },
+      { "name": "Pasta Alfredo", "price": 11.99, "description": "Creamy sauce" }
+
+    ]
+  }
+]

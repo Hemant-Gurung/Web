@@ -10,7 +10,6 @@ import backgroundFire from "./assets/background-fire.jpg"
 import backgroundFireDesktop from "./assets/background-fire-wide.jpg"
 
 import logo from "./assets/logo.png"
-import background from "./assets/background.jpg"
 import "./styles/App.css";
 import { useEffect, useState } from "react";
 

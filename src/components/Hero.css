@@ -1,13 +1,10 @@
 .hero {
-  background: url('/assets/images/hero.jpg') center/cover no-repeat;
   color: white;
   text-align: center;
-  padding: 6rem 2rem;
 }
 
 .hero h1 {
   font-size: 3rem;
-  margin-bottom: 1rem;
 }
 
 .hero p {
@@ -17,9 +14,11 @@
 /* Mobile */
 @media (max-width: 768px) {
   .hero h1 {
+    color: rgb(255, 255, 255);
     font-size: 2rem;
   }
   .hero p {
+    color: rgb(255, 255, 255);
     font-size: 1rem;
   }
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./ContactForm.css";
+import styles from "./ContactForm.module.css";
 
 const ContactForm = () => {
   const [name, setName] = useState("");
@@ -13,7 +13,7 @@ const ContactForm = () => {
   };
 
   return (
-    <form className="contact-form" onSubmit={handleSubmit}>
+    <form className={styles.contactForm} onSubmit={handleSubmit}>
       <input type="text" placeholder="Name" value={name} onChange={e => setName(e.target.value)} required />
       <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
       <textarea placeholder="Message" value={message} onChange={e => setMessage(e.target.value)} required />

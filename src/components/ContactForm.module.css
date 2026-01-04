@@ -1,10 +1,11 @@
-.contact-form {
+.contactForm {
   display: flex;
   flex-direction: column;
   max-width: 500px;
   margin: 1rem auto;
   gap: 1rem;
 }
+
 
 .contact-form input,
 .contact-form textarea {

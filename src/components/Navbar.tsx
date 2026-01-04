@@ -1,18 +1,19 @@
 import { Link } from "react-router-dom";
 import "./Navbar.css";
+import Sidebar from "./Sidebar";
+import backgroundFire from "../assets/background-fire.jpg"
+import logo from "../assets/logo.png"
+import background from "../assets/background.jpg"
 
 const Navbar = () => {
   return (
-    <nav className="navbar">
-      <h1 className="logo">My Restaurant</h1>
+    // <nav className="navbar">
+    <div style={{overflowX:'hidden'}}>
       <ul className="nav-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/menu">Menu</Link></li>
-        <li><Link to="/about">About</Link></li>
-        <li><Link to="/contact">Contact</Link></li>
-        <li><Link to="/reservations">Reservations</Link></li>
+        <Sidebar />
       </ul>
-    </nav>
+    </div>
+    // </nav>
   );
 };
 

@@ -1,0 +1,75 @@
+.ui-footer {
+  background: var(--color-footer-bg, #180e0e);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  padding: 2.5rem 2rem 1.25rem;
+}
+
+.ui-footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  max-width: 960px;
+  margin: 0 auto 2rem;
+}
+
+.ui-footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ui-footer-logo {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+}
+
+.ui-footer-tagline {
+  font-size: 0.85rem;
+  color: #888888;
+  font-style: italic;
+  margin: 0;
+}
+
+.ui-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.2rem;
+  align-items: center;
+}
+
+.ui-footer-link {
+  font-size: 0.88rem;
+  color: #999999;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 500;
+}
+
+.ui-footer-link:hover {
+  color: var(--color-primary, #d32f2f);
+}
+
+.ui-footer-bottom {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+  font-size: 0.8rem;
+  color: #555555;
+}
+
+.ui-footer-bottom p {
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .ui-footer-inner {
+    flex-direction: column;
+  }
+}

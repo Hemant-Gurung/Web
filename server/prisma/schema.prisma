@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model MenuCategory {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  items     MenuItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model MenuItem {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  available   Boolean      @default(true)
+  category    MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId  Int
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Reservation {
+  id        Int               @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String
+  date      DateTime
+  partySize Int
+  notes     String?
+  status    ReservationStatus @default(PENDING)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

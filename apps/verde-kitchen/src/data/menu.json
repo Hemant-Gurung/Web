@@ -1,0 +1,26 @@
+[
+  {
+    "category": "Starters",
+    "items": [
+      { "name": "Hummus & Pita", "price": 7.50, "description": "House-made hummus with warm pita and olive oil drizzle" },
+      { "name": "Fattoush Salad", "price": 9.00, "description": "Crispy pita, cucumber, tomato, pomegranate and sumac dressing" },
+      { "name": "Roasted Beet Dip", "price": 8.00, "description": "Whipped beet and labneh with za'atar and sesame" }
+    ]
+  },
+  {
+    "category": "Mains",
+    "items": [
+      { "name": "Herb Falafel Bowl", "price": 14.00, "description": "Crispy falafel, tabbouleh, pickled veg and tahini" },
+      { "name": "Grilled Branzino", "price": 22.00, "description": "Whole fish with lemon, capers and roasted fennel" },
+      { "name": "Lamb Kofta", "price": 19.50, "description": "Spiced minced lamb, flatbread, yoghurt and harissa" },
+      { "name": "Shakshuka", "price": 13.00, "description": "Eggs poached in spiced tomato sauce with feta" }
+    ]
+  },
+  {
+    "category": "Desserts",
+    "items": [
+      { "name": "Baklava", "price": 6.50, "description": "Honey-drenched filo pastry with pistachios" },
+      { "name": "Saffron Panna Cotta", "price": 8.00, "description": "Silky panna cotta with rose water and berries" }
+    ]
+  }
+]

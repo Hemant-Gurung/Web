@@ -1,0 +1,233 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  width: 100%;
+  max-width: 760px;
+}
+
+/* ── Rows ── */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+/* ── Field ── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.field label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #aaaaaa;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.optional {
+  font-weight: 400;
+  color: #666;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.field input,
+.field textarea {
+  padding: 0.72rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.2);
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+/* ── Party size selector ── */
+.partySelector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.partyBtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: #cccccc;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.partyBtn:hover {
+  background: rgba(211, 47, 47, 0.15);
+  border-color: rgba(211, 47, 47, 0.5);
+  color: #ffffff;
+}
+
+.partyBtnActive {
+  background: #d32f2f !important;
+  border-color: #d32f2f !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(211, 47, 47, 0.4);
+}
+
+/* ── Time grid ── */
+.timeGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.timeBtn {
+  padding: 0.38rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #cccccc;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.timeBtn:hover {
+  background: rgba(211, 47, 47, 0.15);
+  border-color: rgba(211, 47, 47, 0.5);
+  color: #ffffff;
+}
+
+.timeBtnActive {
+  background: #d32f2f !important;
+  border-color: #d32f2f !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(211, 47, 47, 0.35);
+}
+
+/* ── Submit ── */
+.submitBtn {
+  padding: 0.85rem;
+  border: none;
+  border-radius: 10px;
+  background: #d32f2f;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px rgba(211, 47, 47, 0.35);
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #b71c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(211, 47, 47, 0.45);
+}
+
+.submitBtn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.submitBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Success card ── */
+.successCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  max-width: 500px;
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.successIcon {
+  font-size: 3rem;
+}
+
+.successCard h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.successCard p {
+  font-size: 0.95rem;
+  color: #cccccc;
+  line-height: 1.65;
+}
+
+.successCard strong {
+  color: #ffffff;
+}
+
+.resetBtn {
+  margin-top: 0.5rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.resetBtn:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Mobile ── */
+@media (max-width: 580px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

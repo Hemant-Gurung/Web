@@ -1,0 +1,60 @@
+/* ── Theme: My Restaurant (classic red) ── */
+:root {
+  --color-primary: #d32f2f;
+  --color-primary-dark: #b71c1c;
+  --color-primary-glow: rgba(211, 47, 47, 0.40);
+  --color-primary-glow-md: rgba(211, 47, 47, 0.25);
+  --color-primary-glow-sm: rgba(211, 47, 47, 0.20);
+  --color-primary-glow-xs: rgba(211, 47, 47, 0.12);
+  --color-primary-border: rgba(211, 47, 47, 0.45);
+  --color-surface: rgba(255, 255, 255, 0.06);
+  --color-surface-hover: rgba(255, 255, 255, 0.10);
+  --color-border: rgba(255, 255, 255, 0.10);
+  --color-footer-bg: #180e0e;
+}
+
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Base ── */
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  color: #ffffff;
+  background-color: #444444;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}

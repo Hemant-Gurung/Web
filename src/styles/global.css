@@ -1,20 +1,23 @@
-/* Reset and base styles */
-* {
-  /* margin: 0;
-  padding: 0; */
-  /* box-sizing: border-box; */
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 }
 
+/* ── Base ── */
 body {
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
-  color: #333;
+  color: #ffffff;
   background-color: #444444;
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -24,4 +27,19 @@ a {
 
 button {
   cursor: pointer;
+  font-family: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  display: block;
 }

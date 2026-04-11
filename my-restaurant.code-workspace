@@ -1,0 +1,56 @@
+{
+  "folders": [
+    {
+      "name": "My Restaurant (Frontend)",
+      "path": "apps/my-restaurant"
+    },
+    {
+      "name": "Shared UI",
+      "path": "packages/ui"
+    },
+    {
+      "name": "API Client",
+      "path": "packages/api-client"
+    },
+    {
+      "name": "Config",
+      "path": "packages/config"
+    }
+  ],
+  "settings": {
+    "typescript.tsdk": "apps/my-restaurant/node_modules/typescript/lib",
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.next": true
+    },
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/.next": true,
+      "**/dist": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "bradlc.vscode-tailwindcss",
+      "ms-vscode.vscode-typescript-next"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Start My Restaurant (dev)",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder:My Restaurant (Frontend)}",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": ["run", "dev"],
+        "skipFiles": ["<node_internals>/**"],
+        "console": "integratedTerminal"
+      }
+    ]
+  }
+}

@@ -5,16 +5,14 @@
   "packageManager": "npm@11.11.0",
   "workspaces": [
     "apps/*",
-    "packages/*",
-    "server"
+    "packages/*"
   ],
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "dev:my-restaurant": "npm run dev --workspace=my-restaurant",
-    "dev:verde-kitchen": "npm run dev --workspace=verde-kitchen",
-    "dev:server": "npm run dev --workspace=restaurant-server"
+    "dev:verde-kitchen": "npm run dev --workspace=verde-kitchen"
   },
   "devDependencies": {
     "turbo": "^2.3.3",

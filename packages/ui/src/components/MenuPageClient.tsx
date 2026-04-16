@@ -33,9 +33,9 @@ export function MenuPageClient({ categories }: Props) {
       <h1 className={styles.title}>Our Menu</h1>
 
       <div className={styles.tabs} role="tablist">
-        {tabs.map((tab) => (
+        {tabs.map((tab, i) => (
           <button
-            key={tab}
+            key={`${tab}-${i}`}
             role="tab"
             aria-selected={activeCategory === tab}
             className={`${styles.tab} ${activeCategory === tab ? styles.tabActive : ""}`}
@@ -47,8 +47,8 @@ export function MenuPageClient({ categories }: Props) {
       </div>
 
       <div className={styles.sections}>
-        {visibleCategories.map((category) => (
-          <section key={category.category} className={styles.section}>
+        {visibleCategories.map((category, i) => (
+          <section key={`${category.category}-${i}`} className={styles.section}>
             {activeCategory === "All" && (
               <h2 className={styles.sectionTitle}>{category.category}</h2>
             )}

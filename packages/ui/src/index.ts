@@ -4,5 +4,6 @@ export { Hero } from "./components/Hero";
 export { MenuPageClient } from "./components/MenuPageClient";
 export type { MenuCategory, MenuItem } from "./components/MenuPageClient";
 export { ReservationForm } from "./components/ReservationForm";
+export type { ReservationData } from "./components/ReservationForm";
 export { ContactForm } from "./components/ContactForm";
 export { MapEmbed } from "./components/MapEmbed";

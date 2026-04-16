@@ -4,41 +4,59 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **Turborepo monorepo** for a multi-restaurant platform. It has two Next.js restaurant frontends and shared packages. The Express.js API backend and Payload CMS each live in separate repositories.
+This is a **Turborepo monorepo** for a multi-restaurant platform. It has a single Next.js app (`apps/restaurant`) that serves multiple restaurants via the `NEXT_PUBLIC_RESTAURANT_ID` environment variable. Each restaurant is deployed as a separate Vercel project pointing at the same codebase. The Express.js API backend and Payload CMS each live in separate repositories.
 
 ## Common Commands
 
-### Run everything
+### Run locally
+
 ```bash
-npm run dev                    # All apps in parallel
+npm run dev:my-restaurant      # My Restaurant (port 3000)
+npm run dev:verde-kitchen      # Verde Kitchen (port 3000)
 ```
 
-### Run individual workspaces
-```bash
-npm run dev:my-restaurant      # Restaurant app (port 3000)
-npm run dev:verde-kitchen      # Restaurant app (port 3001)
-```
+### Build
 
-### Build & lint
 ```bash
+npm run build:my-restaurant    # Build for My Restaurant
+npm run build:verde-kitchen    # Build for Verde Kitchen
 npm run build                  # Build all workspaces via Turborepo
 npm run lint                   # Lint all workspaces
 ```
 
 ### API client type generation
+
 ```bash
 npm run generate:api           # Regenerate types from the API's swagger.yaml → packages/api-client/src/schema.d.ts
 ```
 
 ## Architecture
 
-```
+```text
 apps/
-  my-restaurant/    Next.js 16 (port 3000) — Restaurant #1 frontend
-  verde-kitchen/    Next.js 16 (port 3001) — Restaurant #2 frontend
+  restaurant/         Single Next.js 16 app — serves all restaurants via env var
+    src/
+      app/            Next.js App Router pages (about, contact, menu, reservations)
+      components/     HeroHeader (restaurant-specific image strip)
+      config/         Loads the right RestaurantConfig based on NEXT_PUBLIC_RESTAURANT_ID
+      data/
+        my-restaurant/menu.json
+        verde-kitchen/menu.json
+      styles/         global.css (reset), App.css (hero/layout)
+    public/
+      my-restaurant/  logo.png, background-fire*.jpg
+    .env.my-restaurant
+    .env.verde-kitchen
+
 packages/
-  ui/               Shared React components (Navbar, Footer, forms)
-  config/           Shared RestaurantConfig types
+  ui/               Shared React components (Navbar, Footer, Hero, forms)
+  config/           RestaurantConfig types + per-restaurant config objects
+    src/
+      restaurant.ts              — types + getNavLinks()
+      restaurants/
+        my-restaurant.ts         — My Restaurant config
+        verde-kitchen.ts         — Verde Kitchen config
+      index.ts                   — re-exports all configs and types
   api-client/       Auto-generated type-safe OpenAPI client
 
 # Separate repositories:
@@ -46,33 +64,80 @@ packages/
 # restaurant-platform-cms — Next.js + Payload CMS (port 3002) — content admin
 ```
 
-**Data flow:**
-- Restaurant frontends call the Express API via the `@repo/api-client` type-safe client
-- The Express API lives in a separate repo (`restaurant-platform-api`) and uses Prisma to read/write PostgreSQL (hosted on Supabase)
-- Payload CMS lives in a separate repo (`restaurant-platform-cms`) and writes to the same PostgreSQL database
-- Shared UI components and config types live in `packages/` and are referenced as `@repo/ui`, `@repo/config`
+## Adding a New Restaurant
+
+1. Add a new config file at `packages/config/src/restaurants/<id>.ts` implementing `RestaurantConfig`
+2. Register it in `packages/config/src/index.ts` (add to the `configs` map in `apps/restaurant/src/config/restaurant.ts`)
+3. Add menu data at `apps/restaurant/src/data/<id>/menu.json`
+4. Add public assets at `apps/restaurant/public/<id>/`
+5. Create `apps/restaurant/.env.<id>` with `NEXT_PUBLIC_RESTAURANT_ID=<id>` and `CMS_API_KEY`
+6. Add dev/build scripts to root `package.json`
+7. Create a new Vercel project pointing to this repo with `NEXT_PUBLIC_RESTAURANT_ID=<id>` and `CMS_API_KEY` set in its environment
+
+## Vercel Deployment
+
+Each restaurant is a **separate Vercel project** using the same GitHub repo:
+
+| Vercel Project | Root Directory  | Key Env Vars                                             |
+|----------------|-----------------|----------------------------------------------------------|
+| my-restaurant  | apps/restaurant | `NEXT_PUBLIC_RESTAURANT_ID=my-restaurant`, `CMS_API_KEY` |
+| verde-kitchen  | apps/restaurant | `NEXT_PUBLIC_RESTAURANT_ID=verde-kitchen`, `CMS_API_KEY` |
 
 ## Key Patterns
 
-### API client usage
-The `@repo/api-client` package wraps `openapi-fetch`. After schema changes in the API repo's `swagger.yaml`, copy the updated file and run `npm run generate:api` to regenerate `packages/api-client/src/schema.d.ts`. The client is used in frontend apps as `apiClient.GET(...)` / `authenticatedClient().POST(...)`.
+### Restaurant config selection
 
-### Adding a new API endpoint
-1. Add the route/handler in the `restaurant-platform-api` repo
-2. Document it in that repo's `swagger.yaml`
-3. Copy the updated `swagger.yaml` to this monorepo and run `npm run generate:api`
-4. Use the updated client in the frontend apps
+`apps/restaurant/src/config/restaurant.ts` reads `NEXT_PUBLIC_RESTAURANT_ID` (inlined at build time by Next.js) and exports the matching `RestaurantConfig`. All pages import from `@/config/restaurant`.
+
+### Theme
+
+Each `RestaurantConfig` has a `theme` object — a flat map of CSS custom properties (`--color-primary`, etc.). These are injected on the `<html>` element in `layout.tsx` as inline styles, so all shared UI components automatically pick up the right brand colours via CSS vars.
+
+### Feature flags
+
+`restaurantConfig.features.reservations` controls whether the reservations page is active. `getNavLinks()` automatically omits disabled pages from the nav. The reservations page itself calls `notFound()` if the flag is false.
+
+### API client usage
+
+The `@repo/api-client` package wraps `openapi-fetch`. After schema changes in the API repo's `swagger.yaml`, copy the updated file and run `npm run generate:api` to regenerate `packages/api-client/src/schema.d.ts`.
 
 ### Authentication
+
 The Express backend (in `restaurant-platform-api`) uses JWT (`jsonwebtoken`). The `requireAuth` middleware verifies tokens. Admin users are stored in the `Admin` Prisma model with bcrypt-hashed passwords.
 
-### Multi-restaurant support
-Both restaurant apps share the same API backend and UI package. Restaurant-specific config (name, branding, etc.) is typed via `RestaurantConfig` in `@repo/config`.
+**Payload CMS API key auth:** API keys live on the `admins` collection (slug = `admins`). The correct header format is:
 
-## Environment Variables
+```http
+Authorization: admins API-Key <key>
+```
 
-**Root `.env.local`:**
+Not `users API-Key` — Payload requires the collection slug that owns the key.
+
+## Environment Variables (per restaurant env file)
+
+- `NEXT_PUBLIC_RESTAURANT_ID` — slug matching a key in the configs map (`my-restaurant`, `verde-kitchen`)
 - `CMS_URL` — URL for the Payload CMS (default: `http://localhost:3002`)
+- `CMS_API_KEY` — API key for this restaurant's CMS admin account
+
+## CMS Collections (Payload CMS)
+
+Menu data is fetched directly from Payload CMS — no auth needed, public `publicRestaurantRead` policy.
+
+| Collection      | Slug              |
+|-----------------|-------------------|
+| Menu Categories | `menu-categories` |
+| Menu Items      | `menu-items`      |
+
+**Menu Categories fields:** `name`, `order`, `restaurant`
+
+**Menu Items fields:** `name`, `description`, `price`, `available`, `category` (ID relation to menu-categories), `order`, `restaurant`
+
+Filter by restaurant slug via `?where[restaurant][equals]=<slug>` (Payload `where` syntax). Items are scoped to a category via the `category` field (ID).
+
+```http
+GET /api/menu-categories?where[restaurant][equals]=<slug>&sort=order
+GET /api/menu-items?where[restaurant][equals]=<slug>&sort=order&limit=200
+```
 
 ## API Documentation
 

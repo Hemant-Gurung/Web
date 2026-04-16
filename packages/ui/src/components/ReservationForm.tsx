@@ -1,9 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./ReservationForm.module.css";
 
 type Step = "form" | "success";
+
+export interface ReservationData {
+  name: string;
+  email: string;
+  phone: string;
+  date: string;   // "YYYY-MM-DD"
+  time: string;   // "7:00 PM"
+  partySize: number;
+  notes?: string;
+}
 
 const TIME_SLOTS = [
   "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM",
@@ -13,7 +23,11 @@ const TIME_SLOTS = [
 
 const PARTY_SIZES = [1, 2, 3, 4, 5, 6, 7, 8];
 
-export function ReservationForm() {
+interface ReservationFormProps {
+  onSubmit?: (data: ReservationData) => Promise<void>;
+}
+
+export function ReservationForm({ onSubmit }: ReservationFormProps) {
   const [step, setStep] = useState<Step>("form");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -22,18 +36,54 @@ export function ReservationForm() {
   const [time, setTime] = useState("");
   const [party, setParty] = useState<number>(2);
   const [notes, setNotes] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const today = new Date().toISOString().split("T")[0];
+  const [today, setToday] = useState("");
+  useEffect(() => {
+    setToday(new Date().toISOString().split("T")[0]);
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStep("success");
+    setError(null);
+
+    if (!time) {
+      setError("Please select a time slot.");
+      return;
+    }
+
+    const data: ReservationData = {
+      name, email, phone, date, time,
+      partySize: party,
+      notes: notes || undefined,
+    };
+
+    if (onSubmit) {
+      setLoading(true);
+      try {
+        await onSubmit(data);
+        setStep("success");
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Something went wrong. Please try again."
+        );
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // No handler provided — just show success (useful for UI preview/dev)
+      setStep("success");
+    }
   };
 
   const handleReset = () => {
     setStep("form");
     setName(""); setEmail(""); setPhone("");
     setDate(""); setTime(""); setParty(2); setNotes("");
+    setError(null);
   };
 
   if (step === "success") {
@@ -116,9 +166,18 @@ export function ReservationForm() {
           value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} />
       </div>
 
-      <button type="submit" className={styles.submitBtn}
-        disabled={!name || !email || !date || !time}>
-        Confirm Reservation
+      {error && (
+        <p className={styles.errorMessage} role="alert">
+          {error}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        className={styles.submitBtn}
+        disabled={!name || !email || !date || !time || loading}
+      >
+        {loading ? "Submitting…" : "Confirm Reservation"}
       </button>
     </form>
   );

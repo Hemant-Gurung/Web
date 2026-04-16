@@ -4,33 +4,37 @@
   padding: 0;
 }
 
-/* ── Burger menu overrides using theme variables ── */
+/* ── Burger button ── */
 .bm-burger-button {
   position: fixed;
-  width: 36px;
-  height: 30px;
+  width: 32px;
+  height: 26px;
   left: 20px;
-  top: 50px;
+  top: 20px;
 }
 
 .bm-burger-bars {
-  background: #ececec;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 2px;
 }
 
 .bm-burger-bars-hover {
   background: var(--color-primary, #d32f2f);
 }
 
+/* ── Close button ── */
 .bm-cross-button {
   height: 24px;
   width: 24px;
-  left: 160px;
+  top: 16px !important;
+  right: 16px !important;
 }
 
 .bm-cross {
-  background: #bdc3c7;
+  background: rgba(255, 255, 255, 0.5);
 }
 
+/* ── Panel ── */
 .bm-menu-wrap {
   position: fixed;
   height: 100%;
@@ -39,38 +43,46 @@
 }
 
 .bm-menu {
-  background: #373a47;
-  padding: 2.5em 0.5em 0;
-  font-size: 1.15em;
-  width: 190px;
+  background: var(--color-footer-bg, #111);
+  padding: 3.5em 0 0;
+  border-right: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
 }
 
 .bm-morph-shape {
-  fill: #373a47;
+  fill: var(--color-footer-bg, #111);
 }
 
-.bm-item-list {
-  color: #b8b7ad;
-  padding: 0.8em;
-}
-
+/* ── Overlay ── */
 .bm-overlay {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.55);
   width: 100%;
   height: 100%;
   top: 0;
+  left: 0;
+}
+
+/* ── Nav items ── */
+.bm-item-list {
+  padding: 0.5em 0;
 }
 
 .bm-item {
-  display: inline-block;
-  color: #d1d1d1;
-  margin-bottom: 10px;
-  text-align: left;
+  display: block;
+  padding: 0.9em 1.75em;
+  color: rgba(255, 255, 255, 0.65);
   text-decoration: none;
-  transition: color 0.2s;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-left: 3px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
   outline: none;
 }
 
-.bm-item:hover {
-  color: #ffffff;
+.bm-item:hover,
+.bm-item:focus {
+  color: #fff;
+  border-left-color: var(--color-primary, #d32f2f);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
 }

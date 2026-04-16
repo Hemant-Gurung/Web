@@ -5,7 +5,7 @@ import Sidebar from "./Sidebar";
 
 const Navbar = () => {
   return (
-    <div style={{overflowX:'hidden'}}>
+    <div style={{overflowX:'hidden',y:-10}}>
       <ul className="nav-links">
         <Sidebar />
       </ul>

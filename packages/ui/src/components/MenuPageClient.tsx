@@ -7,6 +7,7 @@ export interface MenuItem {
   name: string;
   price: number;
   description: string;
+  image?: string;
 }
 
 export interface MenuCategory {
@@ -49,23 +50,31 @@ export function MenuPageClient({ categories }: Props) {
       <div className={styles.sections}>
         {visibleCategories.map((category, i) => (
           <section key={`${category.category}-${i}`} className={styles.section}>
-            {activeCategory === "All" && (
-              <h2 className={styles.sectionTitle}>{category.category}</h2>
-            )}
-            <div className={styles.grid}>
-              {category.items.map((item) => (
-                <div key={item.name} className={styles.card}>
-                  <div className={styles.cardBody}>
-                    <h3 className={styles.itemName}>{item.name}</h3>
-                    <p className={styles.itemDesc}>{item.description}</p>
+              {activeCategory === "All" && (
+                <h2 className={styles.sectionTitle}>{category.category}</h2>
+              )}
+              <div className={styles.grid}>
+                {category.items.map((item) => (
+                  <div key={item.name} className={styles.card}>
+                    {item.image && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className={styles.cardImage}
+                      />
+                    )}
+                    <div className={styles.cardBody}>
+                      <h3 className={styles.itemName}>{item.name}</h3>
+                      <p className={styles.itemDesc}>{item.description}</p>
+                    </div>
+                    <div className={styles.cardFooter}>
+                      <span className={styles.price}>${item.price.toFixed(2)}</span>
+                      <button className={styles.orderBtn}>Order</button>
+                    </div>
                   </div>
-                  <div className={styles.cardFooter}>
-                    <span className={styles.price}>${item.price.toFixed(2)}</span>
-                    <button className={styles.orderBtn}>Order</button>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
           </section>
         ))}
       </div>

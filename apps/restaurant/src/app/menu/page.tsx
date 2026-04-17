@@ -6,11 +6,11 @@ export const metadata = {
   title: `Menu | ${restaurantConfig.name}`,
 };
 
-// Revalidate every hour; menu data changes infrequently
 export const revalidate = 3600;
 
 const CMS_URL = process.env.CMS_URL ?? "http://localhost:3002";
 const RESTAURANT_ID = process.env.NEXT_PUBLIC_RESTAURANT_ID!;
+const CMS_API_KEY = process.env.CMS_API_KEY;
 
 interface CmsCategory {
   id: string;
@@ -24,6 +24,7 @@ interface CmsItem {
   price?: number;
   available?: boolean;
   category: string | { id: string };
+  image?: { url: string } | number | null;
 }
 
 interface PayloadResponse<T> {
@@ -40,17 +41,18 @@ export default async function MenuPage() {
       "where[restaurant][equals]": RESTAURANT_ID,
       sort: "order",
       limit: "200",
+      depth: "2",
     });
 
-const [catsRes, itemsRes] = await Promise.all([
-      fetch(`${CMS_URL}/api/menu-categories?${catsParams}`, {
-        next: { revalidate: 3600 },
-      }),
-      fetch(`${CMS_URL}/api/menu-items?${itemsParams}`, {
-        next: { revalidate: 3600 },
-      }),
+    const authHeaders: Record<string, string> = CMS_API_KEY
+      ? { Authorization: `admins API-Key ${CMS_API_KEY}` }
+      : {};
+
+    const [catsRes, itemsRes] = await Promise.all([
+      fetch(`${CMS_URL}/api/menu-categories?${catsParams}`, { headers: authHeaders }),
+      fetch(`${CMS_URL}/api/menu-items?${itemsParams}`, { headers: authHeaders }),
     ]);
-    
+
     if (!catsRes.ok || !itemsRes.ok) {
       const [catsBody, itemsBody] = await Promise.all([
         catsRes.ok ? null : catsRes.text(),
@@ -86,6 +88,16 @@ const [catsRes, itemsRes] = await Promise.all([
           name: item.name,
           price: item.price ?? 0,
           description: item.description ?? "",
+          image: (() => {
+            if (typeof item.image !== "object" || item.image === null) return undefined;
+            try {
+              const u = new URL(item.image.url);
+              u.hostname = new URL(CMS_URL).hostname;
+              return u.toString();
+            } catch {
+              return item.image.url;
+            }
+          })(),
         }));
 
       const existing = categoryMap.get(cat.name);

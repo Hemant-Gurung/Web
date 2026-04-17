@@ -19,7 +19,9 @@ export const myRestaurantConfig: RestaurantConfig = {
     about: true,
     contact: true,
     reservations: true,
+    ordering: true,
   },
+  orderType: "both",
   theme: {
     "--color-primary": "#d32f2f",
     "--color-primary-dark": "#b71c1c",

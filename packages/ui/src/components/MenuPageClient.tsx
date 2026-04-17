@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styles from "./MenuPageClient.module.css";
+import { useCart } from "./CartProvider";
 
 export interface MenuItem {
   name: string;
@@ -21,6 +22,7 @@ interface Props {
 
 export function MenuPageClient({ categories }: Props) {
   const [activeCategory, setActiveCategory] = useState<string>("All");
+  const { items: cartItems, addItem, updateQuantity } = useCart();
 
   const nonEmptyCategories = categories.filter((c) => c.items.length > 0);
   const tabs = ["All", ...nonEmptyCategories.map((c) => c.category)];
@@ -51,11 +53,13 @@ export function MenuPageClient({ categories }: Props) {
       <div className={styles.sections}>
         {visibleCategories.map((category, i) => (
           <section key={`${category.category}-${i}`} className={styles.section}>
-              {activeCategory === "All" && (
-                <h2 className={styles.sectionTitle}>{category.category}</h2>
-              )}
-              <div className={styles.grid}>
-                {category.items.map((item) => (
+            {activeCategory === "All" && (
+              <h2 className={styles.sectionTitle}>{category.category}</h2>
+            )}
+            <div className={styles.grid}>
+              {category.items.map((item) => {
+                const cartItem = cartItems.find((c) => c.name === item.name);
+                return (
                   <div key={item.name} className={styles.card}>
                     {item.image && (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -71,12 +75,36 @@ export function MenuPageClient({ categories }: Props) {
                     </div>
                     <div className={styles.cardFooter}>
                       <span className={styles.price}>${item.price.toFixed(2)}</span>
-                      <button className={styles.orderBtn}>Order</button>
+                      {cartItem ? (
+                        <div className={styles.qty}>
+                          <button
+                            className={styles.qtyBtn}
+                            onClick={() => updateQuantity(item.name, cartItem.quantity - 1)}
+                          >
+                            −
+                          </button>
+                          <span className={styles.qtyCount}>{cartItem.quantity}</span>
+                          <button
+                            className={styles.qtyBtn}
+                            onClick={() => updateQuantity(item.name, cartItem.quantity + 1)}
+                          >
+                            +
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          className={styles.orderBtn}
+                          onClick={() => addItem({ name: item.name, price: item.price, image: item.image })}
+                        >
+                          Add
+                        </button>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
-            </section>
+                );
+              })}
+            </div>
+          </section>
         ))}
       </div>
     </div>

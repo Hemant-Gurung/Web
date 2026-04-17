@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Navbar, Footer } from "@repo/ui";
 import HeroHeader from "@/components/HeroHeader";
+import { CartShell } from "@/components/CartShell";
 import { restaurantConfig, NAV_LINKS } from "@/config/restaurant";
 import "@/styles/App.css";
 import "@/styles/global.css";
@@ -20,15 +21,17 @@ export default function RootLayout({
       <body>
         <div className="app">
           {restaurantConfig.hero && <HeroHeader config={restaurantConfig.hero} />}
-          <div className="layout">
-            <Navbar links={NAV_LINKS} />
-            <main className="main">{children}</main>
-            <Footer
-              restaurantName={restaurantConfig.name}
-              tagline={restaurantConfig.tagline}
-              links={NAV_LINKS}
-            />
-          </div>
+          <CartShell>
+            <div className="layout">
+              <Navbar links={NAV_LINKS} />
+              <main className="main">{children}</main>
+              <Footer
+                restaurantName={restaurantConfig.name}
+                tagline={restaurantConfig.tagline}
+                links={NAV_LINKS}
+              />
+            </div>
+          </CartShell>
         </div>
       </body>
     </html>

@@ -46,7 +46,10 @@ export interface RestaurantConfig {
     about?: boolean;
     contact?: boolean;
     reservations?: boolean;
+    ordering?: boolean;
   };
+  /** Whether the restaurant supports takeaway, eat-in, or both. Defaults to 'both'. */
+  orderType?: "takeaway" | "eat-in" | "both";
   /**
    * CSS custom properties injected on <html> at runtime.
    * Keys must be valid CSS custom property names (start with --).

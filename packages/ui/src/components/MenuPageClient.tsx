@@ -22,12 +22,13 @@ interface Props {
 export function MenuPageClient({ categories }: Props) {
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
-  const tabs = ["All", ...categories.map((c) => c.category)];
+  const nonEmptyCategories = categories.filter((c) => c.items.length > 0);
+  const tabs = ["All", ...nonEmptyCategories.map((c) => c.category)];
 
   const visibleCategories =
     activeCategory === "All"
-      ? categories
-      : categories.filter((c) => c.category === activeCategory);
+      ? nonEmptyCategories
+      : nonEmptyCategories.filter((c) => c.category === activeCategory);
 
   return (
     <div className={styles.menuPage}>
@@ -75,7 +76,7 @@ export function MenuPageClient({ categories }: Props) {
                   </div>
                 ))}
               </div>
-          </section>
+            </section>
         ))}
       </div>
     </div>

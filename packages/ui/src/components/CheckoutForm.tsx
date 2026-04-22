@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useCart } from "./CartProvider";
+import { LocaleLink } from "./LocaleLink";
 import styles from "./CheckoutForm.module.css";
 import type { CartItem } from "./CartProvider";
 
@@ -17,10 +19,11 @@ export interface OrderData {
 
 interface Props {
   orderType: "takeaway" | "eat-in" | "both";
-  onSubmit: (data: OrderData) => Promise<void>;
+  onSubmit: (data: OrderData) => Promise<{ url: string }>;
 }
 
 export function CheckoutForm({ orderType, onSubmit }: Props) {
+  const t = useTranslations("Checkout");
   const { items, total, clearCart } = useCart();
   const [type, setType] = useState<"takeaway" | "eat-in">(
     orderType === "eat-in" ? "eat-in" : "takeaway"
@@ -31,26 +34,14 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
   const [tableNumber, setTableNumber] = useState("");
   const [notes, setNotes] = useState("");
   const [error, setError] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  if (items.length === 0 && !submitted) {
+  if (items.length === 0) {
     return (
       <div className={styles.page}>
-        <p className={styles.empty}>Your cart is empty. <a href="/menu">Back to menu</a></p>
-      </div>
-    );
-  }
-
-  if (submitted) {
-    return (
-      <div className={styles.page}>
-        <div className={styles.confirmation}>
-          <div className={styles.confirmIcon}>✓</div>
-          <h1>Order placed!</h1>
-          <p>We&apos;ve received your order and will start preparing it shortly.</p>
-          <a href="/menu" className={styles.backBtn}>Order more</a>
-        </div>
+        <p className={styles.empty}>
+          {t("cartEmpty")} <LocaleLink href="/menu">{t("backToMenu")}</LocaleLink>
+        </p>
       </div>
     );
   }
@@ -60,19 +51,18 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
     setError("");
     setLoading(true);
     try {
-      await onSubmit({ type, name, phone, email, tableNumber, notes, items });
+      const { url } = await onSubmit({ type, name, phone, email, tableNumber, notes, items });
       clearCart();
-      setSubmitted(true);
+      window.location.href = url;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
-    } finally {
       setLoading(false);
     }
   }
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>Checkout</h1>
+      <h1 className={styles.title}>{t("title")}</h1>
 
       <div className={styles.layout}>
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -83,66 +73,66 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
                 className={`${styles.typeBtn} ${type === "takeaway" ? styles.typeActive : ""}`}
                 onClick={() => setType("takeaway")}
               >
-                Takeaway
+                {t("takeaway")}
               </button>
               <button
                 type="button"
                 className={`${styles.typeBtn} ${type === "eat-in" ? styles.typeActive : ""}`}
                 onClick={() => setType("eat-in")}
               >
-                Eat In
+                {t("eatIn")}
               </button>
             </div>
           )}
 
           {type === "eat-in" && (
             <div className={styles.field}>
-              <label>Table Number</label>
+              <label>{t("tableNumber")}</label>
               <input
                 value={tableNumber}
                 onChange={(e) => setTableNumber(e.target.value)}
-                placeholder="e.g. 5"
+                placeholder={t("tableNumberPlaceholder")}
               />
             </div>
           )}
 
           <div className={styles.field}>
-            <label>Name *</label>
+            <label>{t("name")}</label>
             <input
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Your name"
+              placeholder={t("namePlaceholder")}
             />
           </div>
 
           <div className={styles.field}>
-            <label>Phone *</label>
+            <label>{t("phone")}</label>
             <input
               required
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="Your phone number"
+              placeholder={t("phonePlaceholder")}
             />
           </div>
 
           <div className={styles.field}>
-            <label>Email</label>
+            <label>{t("email")}</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Optional"
+              placeholder={t("emailPlaceholder")}
             />
           </div>
 
           <div className={styles.field}>
-            <label>Notes</label>
+            <label>{t("notes")}</label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Allergies, special requests…"
+              placeholder={t("notesPlaceholder")}
               rows={3}
             />
           </div>
@@ -150,12 +140,12 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
           {error && <p className={styles.error}>{error}</p>}
 
           <button type="submit" className={styles.submitBtn} disabled={loading}>
-            {loading ? "Placing order…" : `Place Order · $${total.toFixed(2)}`}
+            {loading ? t("redirecting") : t("pay", { amount: `$${total.toFixed(2)}` })}
           </button>
         </form>
 
         <div className={styles.summary}>
-          <h2 className={styles.summaryTitle}>Order Summary</h2>
+          <h2 className={styles.summaryTitle}>{t("summary")}</h2>
           <ul className={styles.summaryList}>
             {items.map((item) => (
               <li key={item.name} className={styles.summaryItem}>
@@ -165,7 +155,7 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
             ))}
           </ul>
           <div className={styles.summaryTotal}>
-            <span>Total</span>
+            <span>{t("total")}</span>
             <span>${total.toFixed(2)}</span>
           </div>
         </div>

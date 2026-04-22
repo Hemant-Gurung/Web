@@ -9,15 +9,17 @@ interface FeatureCard {
 
 interface HeroProps {
   heading: string;
+  tagline?: string;
   subtext: string;
   features: FeatureCard[];
 }
 
-export function Hero({ heading, subtext, features }: HeroProps) {
+export function Hero({ heading, tagline, subtext, features }: HeroProps) {
   return (
     <section className="ui-hero-section">
       <div className="ui-hero-overlay">
         <h1 className="ui-hero-heading">{heading}</h1>
+        {tagline && <p className="ui-hero-tagline">{tagline}</p>}
         <p className="ui-hero-subtext">{subtext}</p>
         <div className="ui-hero-cta-group">
           <Link href="/menu" className="ui-hero-btn ui-hero-btn-primary">

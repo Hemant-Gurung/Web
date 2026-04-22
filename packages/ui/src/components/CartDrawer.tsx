@@ -1,8 +1,9 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useCart } from "./CartProvider";
+import { LocaleLink } from "./LocaleLink";
 import styles from "./CartDrawer.module.css";
-import Link from "next/link";
 
 interface Props {
   isOpen: boolean;
@@ -11,18 +12,19 @@ interface Props {
 
 export function CartDrawer({ isOpen, onClose }: Props) {
   const { items, total, updateQuantity, removeItem, itemCount } = useCart();
+  const t = useTranslations("Cart");
 
   return (
     <>
       {isOpen && <div className={styles.overlay} onClick={onClose} />}
       <aside className={`${styles.drawer} ${isOpen ? styles.open : ""}`}>
         <div className={styles.header}>
-          <h2 className={styles.title}>Your Order</h2>
-          <button className={styles.closeBtn} onClick={onClose} aria-label="Close cart">✕</button>
+          <h2 className={styles.title}>{t("title")}</h2>
+          <button className={styles.closeBtn} onClick={onClose} aria-label={t("close")}>✕</button>
         </div>
 
         {items.length === 0 ? (
-          <p className={styles.empty}>Your cart is empty.</p>
+          <p className={styles.empty}>{t("empty")}</p>
         ) : (
           <>
             <ul className={styles.list}>
@@ -44,12 +46,12 @@ export function CartDrawer({ isOpen, onClose }: Props) {
 
             <div className={styles.footer}>
               <div className={styles.total}>
-                <span>Total</span>
+                <span>{t("total")}</span>
                 <span>${total.toFixed(2)}</span>
               </div>
-              <Link href="/checkout" className={styles.checkoutBtn} onClick={onClose}>
-                Checkout ({itemCount})
-              </Link>
+              <LocaleLink href="/checkout" className={styles.checkoutBtn} onClick={onClose}>
+                {t("checkout", { count: itemCount })}
+              </LocaleLink>
             </div>
           </>
         )}

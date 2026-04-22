@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import styles from "./MenuPageClient.module.css";
 import { useCart } from "./CartProvider";
 
@@ -18,23 +19,26 @@ export interface MenuCategory {
 
 interface Props {
   categories: MenuCategory[];
+  orderingEnabled?: boolean;
 }
 
-export function MenuPageClient({ categories }: Props) {
-  const [activeCategory, setActiveCategory] = useState<string>("All");
+export function MenuPageClient({ categories, orderingEnabled = false }: Props) {
+  const t = useTranslations("Menu");
+  const [activeCategory, setActiveCategory] = useState<string>(t("all"));
   const { items: cartItems, addItem, updateQuantity } = useCart();
 
   const nonEmptyCategories = categories.filter((c) => c.items.length > 0);
-  const tabs = ["All", ...nonEmptyCategories.map((c) => c.category)];
+  const allLabel = t("all");
+  const tabs = [allLabel, ...nonEmptyCategories.map((c) => c.category)];
 
   const visibleCategories =
-    activeCategory === "All"
+    activeCategory === allLabel
       ? nonEmptyCategories
       : nonEmptyCategories.filter((c) => c.category === activeCategory);
 
   return (
     <div className={styles.menuPage}>
-      <h1 className={styles.title}>Our Menu</h1>
+      <h1 className={styles.title}>{t("title")}</h1>
 
       <div className={styles.tabs} role="tablist">
         {tabs.map((tab, i) => (
@@ -53,7 +57,7 @@ export function MenuPageClient({ categories }: Props) {
       <div className={styles.sections}>
         {visibleCategories.map((category, i) => (
           <section key={`${category.category}-${i}`} className={styles.section}>
-            {activeCategory === "All" && (
+            {activeCategory === allLabel && (
               <h2 className={styles.sectionTitle}>{category.category}</h2>
             )}
             <div className={styles.grid}>
@@ -75,7 +79,7 @@ export function MenuPageClient({ categories }: Props) {
                     </div>
                     <div className={styles.cardFooter}>
                       <span className={styles.price}>${item.price.toFixed(2)}</span>
-                      {cartItem ? (
+                      {orderingEnabled && (cartItem ? (
                         <div className={styles.qty}>
                           <button
                             className={styles.qtyBtn}
@@ -96,9 +100,9 @@ export function MenuPageClient({ categories }: Props) {
                           className={styles.orderBtn}
                           onClick={() => addItem({ name: item.name, price: item.price, image: item.image })}
                         >
-                          Add
+                          {t("add")}
                         </button>
-                      )}
+                      ))}
                     </div>
                   </div>
                 );

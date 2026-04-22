@@ -15,7 +15,8 @@
     "dev:verde-kitchen": "cp apps/restaurant/.env.verde-kitchen apps/restaurant/.env.local && npm run dev --workspace=restaurant",
     "build:my-restaurant": "cp apps/restaurant/.env.my-restaurant apps/restaurant/.env.local && npm run build --workspace=restaurant",
     "build:verde-kitchen": "cp apps/restaurant/.env.verde-kitchen apps/restaurant/.env.local && npm run build --workspace=restaurant",
-    "generate:api": "npm run generate --workspace=@repo/api-client"
+    "generate:api": "npm run generate --workspace=@repo/api-client",
+    "generate:cms-types": "cd ../restaurant-platform-cms && npx payload generate:types && sed '/declare module .payload./,/^}/d' payload-types.ts > ../Web/packages/ui/src/payload-types.ts"
   },
   "devDependencies": {
     "dotenv-cli": "^11.0.0",

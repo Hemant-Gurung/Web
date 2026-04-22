@@ -1,0 +1,63 @@
+{
+  "Nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "about": "Over ons",
+    "contact": "Contact",
+    "reservations": "Reserveren"
+  },
+  "Menu": {
+    "title": "Ons Menu",
+    "all": "Alles",
+    "add": "Toevoegen"
+  },
+  "Cart": {
+    "title": "Uw Bestelling",
+    "empty": "Uw winkelwagen is leeg.",
+    "total": "Totaal",
+    "checkout": "Afrekenen ({count})",
+    "close": "Winkelwagen sluiten"
+  },
+  "Checkout": {
+    "title": "Afrekenen",
+    "takeaway": "Afhalen",
+    "eatIn": "Ter plaatse",
+    "tableNumber": "Tafelnummer",
+    "tableNumberPlaceholder": "bijv. 5",
+    "name": "Naam *",
+    "namePlaceholder": "Uw naam",
+    "phone": "Telefoon *",
+    "phonePlaceholder": "Uw telefoonnummer",
+    "email": "E-mail",
+    "emailPlaceholder": "Optioneel",
+    "notes": "Opmerkingen",
+    "notesPlaceholder": "Allergieën, speciale verzoeken…",
+    "pay": "Betalen · {amount}",
+    "redirecting": "Doorsturen naar betaling…",
+    "summary": "Besteloverzicht",
+    "total": "Totaal",
+    "cartEmpty": "Uw winkelwagen is leeg.",
+    "backToMenu": "Terug naar menu"
+  },
+  "OrderSuccess": {
+    "title": "Bestelling ontvangen!",
+    "message": "Bedankt voor uw bestelling. We hebben het zo snel mogelijk klaar.",
+    "cta": "Meer bestellen"
+  },
+  "About": {
+    "title": "Over ons",
+    "story": "Ons Verhaal",
+    "team": "Ons Team",
+    "est": "Geopend"
+  },
+  "Contact": {
+    "title": "Contact",
+    "address": "Adres",
+    "phone": "Telefoon",
+    "hours": "Openingstijden"
+  },
+  "Reservations": {
+    "title": "Tafel Reserveren",
+    "subtitle": "Reserveer uw tafel en wij zorgen voor de rest."
+  }
+}

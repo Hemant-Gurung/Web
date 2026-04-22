@@ -10,8 +10,10 @@ export interface RestaurantContact {
 
 export interface AboutConfig {
   establishedYear: number;
-  /** Each string is one paragraph */
+  /** Default story paragraphs (English). */
   story: string[];
+  /** Locale-specific story overrides, e.g. { nl: ["...", "..."], fr: ["...", "..."] } */
+  storyTranslations?: Partial<Record<string, string[]>>;
   stats: Array<{ value: string; label: string }>;
   team: Array<{ name: string; role: string; emoji: string }>;
 }
@@ -38,7 +40,11 @@ export interface RestaurantConfig {
   id: string;
   name: string;
   tagline: string;
+  /** Locale-specific tagline overrides, e.g. { nl: "...", fr: "..." } */
+  taglineTranslations?: Partial<Record<string, string>>;
   description: string;
+  /** Locale-specific description overrides */
+  descriptionTranslations?: Partial<Record<string, string>>;
   contact: RestaurantContact;
   /** Pages this restaurant supports. Omitting a key or setting false disables that page. */
   features: {
@@ -50,6 +56,8 @@ export interface RestaurantConfig {
   };
   /** Whether the restaurant supports takeaway, eat-in, or both. Defaults to 'both'. */
   orderType?: "takeaway" | "eat-in" | "both";
+  /** Supported locale codes — shown in the language selector. First entry is the default. */
+  locales: string[];
   /**
    * CSS custom properties injected on <html> at runtime.
    * Keys must be valid CSS custom property names (start with --).
@@ -61,12 +69,12 @@ export interface RestaurantConfig {
   homeFeatures: HomeFeature[];
 }
 
-/** Derives nav links from the config, respecting feature flags. */
+/** Derives nav links from the config, respecting feature flags. Labels are translation keys from the Nav namespace. */
 export function getNavLinks(config: RestaurantConfig): NavLink[] {
-  const links: NavLink[] = [{ href: "/", label: "Home" }];
-  if (config.features.menu !== false) links.push({ href: "/menu", label: "Menu" });
-  if (config.features.about !== false) links.push({ href: "/about", label: "About" });
-  if (config.features.contact !== false) links.push({ href: "/contact", label: "Contact" });
-  if (config.features.reservations) links.push({ href: "/reservations", label: "Reservations" });
+  const links: NavLink[] = [{ href: "/", label: "home" }];
+  if (config.features.menu !== false) links.push({ href: "/menu", label: "menu" });
+  if (config.features.about !== false) links.push({ href: "/about", label: "about" });
+  if (config.features.contact !== false) links.push({ href: "/contact", label: "contact" });
+  if (config.features.reservations) links.push({ href: "/reservations", label: "reservations" });
   return links;
 }

@@ -4,7 +4,15 @@ export const verdeKitchenConfig: RestaurantConfig = {
   id: "verde-kitchen",
   name: "Verde Kitchen",
   tagline: "Fresh. Simple. Nourishing.",
+  taglineTranslations: {
+    nl: "Vers. Eenvoudig. Voedzaam.",
+    fr: "Frais. Simple. Nourrissant.",
+  },
   description: "Mediterranean-inspired dishes made from the freshest seasonal produce.",
+  descriptionTranslations: {
+    nl: "Mediterrane gerechten gemaakt van de meest verse seizoensproducten.",
+    fr: "Des plats d'inspiration méditerranéenne préparés avec les produits de saison les plus frais.",
+  },
   contact: {
     address: "88 Grove Lane, Portland, OR",
     phone: "(503) 222-0088",
@@ -20,6 +28,7 @@ export const verdeKitchenConfig: RestaurantConfig = {
     contact: true,
     reservations: false, // walk-ins only
   },
+  locales: ["en", "nl", "fr"],
   theme: {
     "--color-primary": "#2e7d32",
     "--color-primary-dark": "#1b5e20",
@@ -41,11 +50,21 @@ export const verdeKitchenConfig: RestaurantConfig = {
       "Verde Kitchen was born out of a love for Mediterranean food and a belief that eating well shouldn't be complicated. We opened our doors in Portland with one mission: serve honest, nourishing food made from the best seasonal ingredients we can find.",
       "Everything is prepared fresh each morning — no freezers, no shortcuts. We work with local farms and fishers to bring you food that tastes the way it's supposed to taste.",
     ],
+    storyTranslations: {
+      nl: [
+        "Verde Kitchen ontstond vanuit een liefde voor Mediterrane keuken en de overtuiging dat goed eten niet ingewikkeld hoeft te zijn. We openden onze deuren in Portland met één missie: eerlijk, voedzaam eten bereiden van de beste seizoensproducten die we kunnen vinden.",
+        "Alles wordt elke ochtend vers bereid — geen vriezers, geen shortcuts. We werken samen met lokale boeren en vissers om u eten te brengen dat smaakt zoals het hoort te smaken.",
+      ],
+      fr: [
+        "Verde Kitchen est née d'un amour pour la cuisine méditerranéenne et de la conviction que bien manger ne devrait pas être compliqué. Nous avons ouvert nos portes à Portland avec une seule mission : servir une nourriture honnête et nourrissante, préparée avec les meilleurs ingrédients de saison.",
+        "Tout est préparé frais chaque matin — pas de congélateurs, pas de raccourcis. Nous travaillons avec des agriculteurs et des pêcheurs locaux pour vous apporter une cuisine qui a le goût qu'elle devrait avoir.",
+      ],
+    },
     stats: [
-      { value: "3", label: "Years Open" },
-      { value: "40+", label: "Menu Items" },
-      { value: "5k+", label: "Happy Guests" },
-      { value: "100%", label: "Local Produce" },
+      // { value: "3", label: "Years Open" },
+      // { value: "40+", label: "Menu Items" },
+      // { value: "5k+", label: "Happy Guests" },
+      // { value: "100%", label: "Local Produce" },
     ],
     team: [
       { name: "Leila Amara", role: "Head Chef", emoji: "👩‍🍳" },

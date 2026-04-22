@@ -4,6 +4,13 @@
   padding: 0;
 }
 
+.ui-nav-lang {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1100;
+}
+
 /* ── Burger button ── */
 .bm-burger-button {
   position: fixed;
@@ -81,8 +88,13 @@
 }
 
 .bm-item:hover,
-.bm-item:focus {
+.bm-item.bm-item-active {
   color: #fff;
   border-left-color: var(--color-primary, #d32f2f);
-  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  background: var(--color-surface, rgba(255, 0, 0, 0.05));
+}
+
+.bm-item:focus-visible {
+  outline: 2px solid var(--color-primary, #d32f2f);
+  outline-offset: -2px;
 }

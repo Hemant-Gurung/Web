@@ -1,25 +1,7 @@
-import { CheckoutForm } from "@repo/ui";
-import type { OrderData } from "@repo/ui";
-import { submitOrder } from "./actions";
-import { restaurantConfig } from "@/config/restaurant";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
-export const metadata = {
-  title: `Checkout | ${restaurantConfig.name}`,
-};
+const defaultLocale = (process.env.NEXT_PUBLIC_LOCALES ?? "en").split(",")[0];
 
 export default function CheckoutPage() {
-  if (!restaurantConfig.features.ordering) notFound();
-
-  async function handleSubmit(data: OrderData) {
-    "use server";
-    return submitOrder(data);
-  }
-
-  return (
-    <CheckoutForm
-      orderType={restaurantConfig.orderType ?? "both"}
-      onSubmit={handleSubmit}
-    />
-  );
+  redirect(`/${defaultLocale}/checkout`);
 }

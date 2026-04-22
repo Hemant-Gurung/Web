@@ -81,6 +81,34 @@
   line-height: 1.4;
 }
 
+/* ── Opening hours list ── */
+.hoursList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.hoursRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.88rem;
+  color: #cccccc;
+  line-height: 1.5;
+}
+
+.hoursDay {
+  font-weight: 600;
+  min-width: 90px;
+}
+
+.hoursTime {
+  color: #aaaaaa;
+}
+
 /* ── Form + Map row ── */
 .formMapRow {
   display: grid;

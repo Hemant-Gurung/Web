@@ -1,0 +1,63 @@
+{
+  "Nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "about": "About",
+    "contact": "Contact",
+    "reservations": "Reservations"
+  },
+  "Menu": {
+    "title": "Our Menu",
+    "all": "All",
+    "add": "Add"
+  },
+  "Cart": {
+    "title": "Your Order",
+    "empty": "Your cart is empty.",
+    "total": "Total",
+    "checkout": "Checkout ({count})",
+    "close": "Close cart"
+  },
+  "Checkout": {
+    "title": "Checkout",
+    "takeaway": "Takeaway",
+    "eatIn": "Eat In",
+    "tableNumber": "Table Number",
+    "tableNumberPlaceholder": "e.g. 5",
+    "name": "Name *",
+    "namePlaceholder": "Your name",
+    "phone": "Phone *",
+    "phonePlaceholder": "Your phone number",
+    "email": "Email",
+    "emailPlaceholder": "Optional",
+    "notes": "Notes",
+    "notesPlaceholder": "Allergies, special requests…",
+    "pay": "Pay · {amount}",
+    "redirecting": "Redirecting to payment…",
+    "summary": "Order Summary",
+    "total": "Total",
+    "cartEmpty": "Your cart is empty.",
+    "backToMenu": "Back to menu"
+  },
+  "OrderSuccess": {
+    "title": "Order received!",
+    "message": "Thank you for your order. We'll have it ready soon.",
+    "cta": "Order more"
+  },
+  "About": {
+    "title": "About Us",
+    "story": "Our Story",
+    "team": "Meet the Team",
+    "est": "Est."
+  },
+  "Contact": {
+    "title": "Contact Us",
+    "address": "Address",
+    "phone": "Phone",
+    "hours": "Hours"
+  },
+  "Reservations": {
+    "title": "Book a Table",
+    "subtitle": "Reserve your spot and we'll have everything ready for you."
+  }
+}

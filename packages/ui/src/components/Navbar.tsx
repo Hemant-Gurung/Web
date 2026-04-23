@@ -4,8 +4,7 @@ import { useState } from "react";
 import { slide as Menu } from "react-burger-menu";
 import type { ReactNode } from "react";
 import { useLocale } from "next-intl";
-import { usePathname } from "next/navigation";
-import { LocaleLink } from "./LocaleLink";
+import { usePathname, useRouter } from "next/navigation";
 import "./Navbar.css";
 
 interface NavLink {
@@ -23,11 +22,29 @@ export function Navbar({ links, languageSelector }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const locale = useLocale();
   const pathname = usePathname();
+  const router = useRouter();
+
+  function localizedHref(href: string) {
+    return `/${locale}${href === "/" ? "" : href}`;
+  }
 
   function isActive(href: string) {
-    const localizedHref = `/${locale}${href === "/" ? "" : href}`;
+    const lhref = localizedHref(href);
     if (href === "/") return pathname === `/${locale}` || pathname === `/${locale}/`;
-    return pathname.startsWith(localizedHref);
+    return pathname.startsWith(lhref);
+  }
+
+  function handleClick(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
+    e.preventDefault();
+    (e.currentTarget as HTMLElement).blur();
+    setIsOpen(false);
+    if (!isActive(href)) {
+      // Small delay lets the burger menu close animation finish before navigating
+      setTimeout(() => {
+        router.push(localizedHref(href));
+        window.scrollTo({ top: 0 });
+      }, 80);
+    }
   }
 
   return (
@@ -41,14 +58,14 @@ export function Navbar({ links, languageSelector }: NavbarProps) {
           onStateChange={(state: { isOpen: boolean }) => setIsOpen(state.isOpen)}
         >
           {links.map(({ href, label }) => (
-            <LocaleLink
+            <a
               key={href}
               className={`bm-item menu-item${isActive(href) ? " bm-item-active" : ""}`}
-              href={href}
-              onClick={(e) => { (e.currentTarget as HTMLElement).blur(); setIsOpen(false); }}
+              href={localizedHref(href)}
+              onClick={(e) => handleClick(e, href)}
             >
               {label}
-            </LocaleLink>
+            </a>
           ))}
         </Menu>
       </ul>

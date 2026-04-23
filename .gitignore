@@ -18,6 +18,8 @@ out/
 
 # Env files
 .env
+.env.my-restaurant
+.env.verde-kitchen
 .env.local
 .env.*.local
 

@@ -1,12 +1,7 @@
-import { Hero } from "@repo/ui";
-import { restaurantConfig } from "@/config/restaurant";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return (
-    <Hero
-      heading={`Welcome to ${restaurantConfig.name}`}
-      subtext={restaurantConfig.description}
-      features={restaurantConfig.homeFeatures}
-    />
-  );
+const defaultLocale = (process.env.NEXT_PUBLIC_LOCALES ?? "en").split(",")[0];
+
+export default function RootPage() {
+  redirect(`/${defaultLocale}`);
 }

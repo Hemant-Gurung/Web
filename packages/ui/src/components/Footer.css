@@ -35,6 +35,24 @@
   margin: 0;
 }
 
+.ui-footer-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: 0.6rem;
+}
+
+.ui-footer-social-link {
+  font-size: 0.82rem;
+  color: #777777;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ui-footer-social-link:hover {
+  color: var(--color-primary, #d32f2f);
+}
+
 .ui-footer-nav {
   display: flex;
   flex-wrap: wrap;

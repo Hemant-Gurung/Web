@@ -30,18 +30,32 @@ npm run lint                   # Lint all workspaces
 npm run generate:api           # Regenerate types from the API's swagger.yaml → packages/api-client/src/schema.d.ts
 ```
 
+### CMS type generation
+
+```bash
+npm run generate:cms-types     # Run payload generate:types in CMS repo → packages/ui/src/payload-types.ts
+```
+
+Run this after adding or changing fields in Payload CMS collections. The script also strips the `declare module 'payload'` block from the output — that block requires the `payload` npm package which is not installed in the frontend.
+
 ## Architecture
 
 ```text
 apps/
   restaurant/         Single Next.js 16 app — serves all restaurants via env var
+    messages/         Translation files: en.json, nl.json, fr.json
+    middleware.ts     next-intl locale routing (redirects / → /en, /nl, etc.)
     src/
-      app/            Next.js App Router pages (about, contact, menu, reservations)
-      components/     HeroHeader (restaurant-specific image strip)
+      app/
+        layout.tsx              — minimal root layout (html/body, theme, lang attr)
+        [locale]/               — all pages live here; locale param drives translations
+          layout.tsx            — NextIntlClientProvider, Navbar, Footer, CartShell
+          page.tsx / menu/ checkout/ about/ contact/ reservations/ order/success/
+      components/     HeroHeader (restaurant-specific image strip), CartShell
       config/         Loads the right RestaurantConfig based on NEXT_PUBLIC_RESTAURANT_ID
-      data/
-        my-restaurant/menu.json
-        verde-kitchen/menu.json
+      i18n/
+        routing.ts              — defineRouting() using restaurantConfig.locales
+        request.ts              — getRequestConfig(), loads messages/[locale].json
       styles/         global.css (reset), App.css (hero/layout)
     public/
       my-restaurant/  logo.png, background-fire*.jpg
@@ -49,13 +63,22 @@ apps/
     .env.verde-kitchen
 
 packages/
-  ui/               Shared React components (Navbar, Footer, Hero, forms)
+  ui/               Shared React components (Navbar, Footer, Hero, forms, cart, checkout, i18n)
+    src/
+      payload-types.ts           — generated Payload CMS types (run generate:cms-types)
+      components/
+        CartProvider.tsx         — React Context + localStorage cart state
+        CartDrawer.tsx           — slide-in cart panel + fixed cart button; uses useTranslations("Cart")
+        CheckoutForm.tsx         — checkout form + order summary; uses useTranslations("Checkout")
+        MenuPageClient.tsx       — menu grid + tabs; uses useTranslations("Menu")
+        LocaleLink.tsx           — wraps next/link, auto-prefixes /{locale} to all internal hrefs
+        LanguageSelector.tsx     — EN/NL/FR toggle buttons; hidden when restaurant has only 1 locale
   config/           RestaurantConfig types + per-restaurant config objects
     src/
-      restaurant.ts              — types + getNavLinks()
+      restaurant.ts              — types + getNavLinks() (labels are now translation keys, not hardcoded)
       restaurants/
-        my-restaurant.ts         — My Restaurant config
-        verde-kitchen.ts         — Verde Kitchen config
+        my-restaurant.ts         — locales: ["en"]
+        verde-kitchen.ts         — locales: ["en", "nl", "fr"]
       index.ts                   — re-exports all configs and types
   api-client/       Auto-generated type-safe OpenAPI client
 
@@ -95,7 +118,33 @@ Each `RestaurantConfig` has a `theme` object — a flat map of CSS custom proper
 
 ### Feature flags
 
-`restaurantConfig.features.reservations` controls whether the reservations page is active. `getNavLinks()` automatically omits disabled pages from the nav. The reservations page itself calls `notFound()` if the flag is false.
+`restaurantConfig.features.reservations` controls whether the reservations page is active. `restaurantConfig.features.ordering` controls online ordering. `getNavLinks()` automatically omits disabled pages from the nav. Each page calls `notFound()` if its flag is false.
+
+`restaurantConfig.orderType` can be `"takeaway"`, `"eat-in"`, or `"both"`. When `"both"`, the checkout form shows a toggle. When fixed to one type, no toggle is shown.
+
+### Internationalisation (next-intl)
+
+All pages live under `app/[locale]/`. The `middleware.ts` intercepts every request and redirects to the correct locale prefix (e.g. `/` → `/en`).
+
+**Adding a locale to a restaurant:**
+
+1. Add the locale code to `restaurantConfig.locales` in `packages/config/src/restaurants/<id>.ts`
+2. Add a `messages/<locale>.json` file in `apps/restaurant/messages/`
+
+**Translation namespaces** (all in `messages/*.json`):
+
+- `Nav` — navigation labels
+- `Menu` — menu page (title, All tab, Add button)
+- `Cart` — cart drawer
+- `Checkout` — checkout form labels and buttons
+- `OrderSuccess` — post-payment confirmation page
+- `About`, `Contact`, `Reservations` — page headings
+
+**`getNavLinks()`** now returns translation keys as `label` values (e.g. `"menu"`, `"about"`). The `[locale]/layout.tsx` translates them via `getTranslations("Nav")` before passing to `<Navbar>`.
+
+**`LocaleLink`** must be used instead of `next/link` anywhere inside `packages/ui` components — it reads `useLocale()` and auto-prefixes `/{locale}` to every internal href. Do not use bare `next/link` in shared components.
+
+**`LanguageSelector`** renders nothing when `locales.length <= 1`, so single-locale restaurants are unaffected.
 
 ### API client usage
 
@@ -116,28 +165,62 @@ Not `users API-Key` — Payload requires the collection slug that owns the key.
 ## Environment Variables (per restaurant env file)
 
 - `NEXT_PUBLIC_RESTAURANT_ID` — slug matching a key in the configs map (`my-restaurant`, `verde-kitchen`)
-- `CMS_URL` — URL for the Payload CMS (default: `http://localhost:3002`)
-- `CMS_API_KEY` — API key for this restaurant's CMS admin account
+- `NEXT_PUBLIC_LOCALES` — comma-separated locale list for this restaurant (e.g. `en` or `en,nl,fr`); first entry is the default locale used by middleware
+- `NEXT_PUBLIC_CMS_URL` — browser-exposed CMS URL (used by client-side code only; may point to a preview deployment)
+- `CMS_URL` — server-only CMS URL; always points to production. Used for menu fetches (with API key) and checkout POST. Never use `NEXT_PUBLIC_CMS_URL` in server actions — Vercel preview deployments require auth cookies that server-to-server requests cannot send.
+- `CMS_API_KEY` — API key for server-side CMS requests (menu items with images)
 
 ## CMS Collections (Payload CMS)
 
-Menu data is fetched directly from Payload CMS — no auth needed, public `publicRestaurantRead` policy.
-
-| Collection      | Slug              |
-|-----------------|-------------------|
-| Menu Categories | `menu-categories` |
-| Menu Items      | `menu-items`      |
+| Collection       | Slug                | Auth required |
+|------------------|---------------------|---------------|
+| Menu Categories  | `menu-categories`   | No            |
+| Menu Items       | `menu-items`        | Yes (images)  |
+| Orders           | `orders`            | Yes           |
+| Reservations     | `reservations`      | No            |
+| Contact Messages | `contact-messages`  | No            |
 
 **Menu Categories fields:** `name`, `order`, `restaurant`
 
-**Menu Items fields:** `name`, `description`, `price`, `available`, `category` (ID relation to menu-categories), `order`, `restaurant`
+**Menu Items fields:** `name`, `description`, `price`, `available`, `image` (upload), `category` (relation → menu-categories), `order`, `restaurant`
 
-Filter by restaurant slug via `?where[restaurant][equals]=<slug>` (Payload `where` syntax). Items are scoped to a category via the `category` field (ID).
+**Orders fields:** `restaurant`, `type` (takeaway/eat-in), `status`, `customer` (name/phone/email), `items` (array: name/price/quantity), `total`, `tableNumber`, `notes`, `stripeSessionId`
+
+Filter by restaurant slug via `?where[restaurant][equals]=<slug>` (Payload `where` syntax).
 
 ```http
 GET /api/menu-categories?where[restaurant][equals]=<slug>&sort=order
-GET /api/menu-items?where[restaurant][equals]=<slug>&sort=order&limit=200
+GET /api/menu-items?where[restaurant][equals]=<slug>&sort=order&limit=200&depth=2
+POST /api/checkout   → { url: string }  (public — no auth needed, rate-limited 10 req/60s per IP)
 ```
+
+### Menu image fetching
+
+The `image` field on menu items is an upload relation. To get the populated `{ url, ... }` object (not just an integer ID), both conditions must be met:
+
+1. Send `Authorization: admins API-Key <key>` header — unauthenticated requests return raw integer IDs
+2. Include `depth=2` in the query — needed to populate nested relations
+
+After fetching, rewrite the image URL hostname to `CMS_URL`'s hostname. Payload stores URLs based on its `serverURL` config; on preview deployments this may point to a different origin that requires Vercel auth cookies, which browser `<img>` tags cannot send cross-origin.
+
+```typescript
+function resolveImageUrl(image): string | undefined {
+  const u = new URL(media.url);
+  u.hostname = new URL(CMS_URL).hostname;
+  return u.toString();
+}
+```
+
+### Online ordering flow
+
+1. User builds cart via `CartProvider` (React Context + localStorage)
+2. Checkout page (`/checkout`) renders `CheckoutForm` from `@repo/ui`
+3. `CheckoutForm` calls `submitOrder` server action (`apps/restaurant/src/app/checkout/actions.ts`)
+4. Server action POSTs to `${CMS_URL}/api/checkout` with cart + customer info + `successUrl`/`cancelUrl`
+5. CMS responds with `{ url }` — a Stripe hosted checkout URL
+6. Frontend redirects: `window.location.href = url`
+7. After payment, Stripe webhook fires → CMS creates the Order record automatically
+8. User lands on `/order/success` — static confirmation page, no API call needed
 
 ## API Documentation
 

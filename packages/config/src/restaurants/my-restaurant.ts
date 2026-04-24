@@ -4,7 +4,15 @@ export const myRestaurantConfig: RestaurantConfig = {
   id: "my-restaurant",
   name: "My Restaurant",
   tagline: "Crafted with passion. Served with love.",
+  taglineTranslations: {
+    nl: "Met passie bereid. Met liefde geserveerd.",
+    fr: "Préparé avec passion. Servi avec amour.",
+  },
   description: "Delicious food, cozy atmosphere, unforgettable experience.",
+  descriptionTranslations: {
+    nl: "Heerlijk eten, gezellige sfeer, onvergetelijke ervaring.",
+    fr: "Une cuisine délicieuse, une atmosphère chaleureuse, une expérience inoubliable.",
+  },
   contact: {
     address: "123 Flavour Street, San Francisco, CA",
     phone: "(123) 456-7890",
@@ -19,7 +27,10 @@ export const myRestaurantConfig: RestaurantConfig = {
     about: true,
     contact: true,
     reservations: true,
+    ordering: true,
   },
+  orderType: "both",
+  locales: ["en","nl"],
   theme: {
     "--color-primary": "#d32f2f",
     "--color-primary-dark": "#b71c1c",
@@ -45,6 +56,16 @@ export const myRestaurantConfig: RestaurantConfig = {
       "Founded over two decades ago by the Rossi family, My Restaurant began as a small corner trattoria with a single goal — to bring the warmth of a home-cooked Italian meal to every guest who walked through our doors.",
       "Today we remain family-run, and that same spirit of hospitality drives everything we do — from sourcing seasonal ingredients at the local market each morning to crafting desserts that taste like grandmother's kitchen.",
     ],
+    storyTranslations: {
+      nl: [
+        "Meer dan twee decennia geleden opgericht door de familie Rossi, begon My Restaurant als een kleine hoektrattoria met één doel — de warmte van een huisgekookte Italiaanse maaltijd brengen aan elke gast die door onze deuren liep.",
+        "Vandaag blijven we een familiebedrijf, en diezelfde geest van gastvrijheid drijft alles wat we doen — van het inkopen van seizoensproducten op de lokale markt elke ochtend tot het bereiden van desserts die smaken als oma's keuken.",
+      ],
+      fr: [
+        "Fondé il y a plus de deux décennies par la famille Rossi, My Restaurant a commencé comme une petite trattoria de quartier avec un seul objectif — apporter la chaleur d'un repas italien fait maison à chaque client qui franchissait nos portes.",
+        "Aujourd'hui, nous restons une entreprise familiale, et ce même esprit d'hospitalité guide tout ce que nous faisons — de l'approvisionnement en ingrédients de saison au marché local chaque matin à la préparation de desserts qui ont le goût de la cuisine de grand-mère.",
+      ],
+    },
     stats: [
       { value: "20+", label: "Years of Passion" },
       { value: "50+", label: "Menu Items" },

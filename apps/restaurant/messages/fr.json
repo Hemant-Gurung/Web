@@ -1,0 +1,63 @@
+{
+  "Nav": {
+    "home": "Accueil",
+    "menu": "Menu",
+    "about": "À propos",
+    "contact": "Contact",
+    "reservations": "Réservations"
+  },
+  "Menu": {
+    "title": "Notre Menu",
+    "all": "Tout",
+    "add": "Ajouter"
+  },
+  "Cart": {
+    "title": "Votre Commande",
+    "empty": "Votre panier est vide.",
+    "total": "Total",
+    "checkout": "Commander ({count})",
+    "close": "Fermer le panier"
+  },
+  "Checkout": {
+    "title": "Commander",
+    "takeaway": "À emporter",
+    "eatIn": "Sur place",
+    "tableNumber": "Numéro de table",
+    "tableNumberPlaceholder": "ex. 5",
+    "name": "Nom *",
+    "namePlaceholder": "Votre nom",
+    "phone": "Téléphone *",
+    "phonePlaceholder": "Votre numéro de téléphone",
+    "email": "E-mail",
+    "emailPlaceholder": "Optionnel",
+    "notes": "Notes",
+    "notesPlaceholder": "Allergies, demandes spéciales…",
+    "pay": "Payer · {amount}",
+    "redirecting": "Redirection vers le paiement…",
+    "summary": "Récapitulatif",
+    "total": "Total",
+    "cartEmpty": "Votre panier est vide.",
+    "backToMenu": "Retour au menu"
+  },
+  "OrderSuccess": {
+    "title": "Commande reçue !",
+    "message": "Merci pour votre commande. Elle sera prête très bientôt.",
+    "cta": "Commander encore"
+  },
+  "About": {
+    "title": "À propos",
+    "story": "Notre Histoire",
+    "team": "Notre Équipe",
+    "est": "Fondé"
+  },
+  "Contact": {
+    "title": "Nous contacter",
+    "address": "Adresse",
+    "phone": "Téléphone",
+    "hours": "Horaires"
+  },
+  "Reservations": {
+    "title": "Réserver une table",
+    "subtitle": "Réservez votre place et nous préparerons tout pour vous."
+  }
+}

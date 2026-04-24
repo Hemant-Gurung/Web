@@ -17,6 +17,7 @@ export type {
   Section as PayloadSection,
   Table as PayloadTable,
   Restaurant as PayloadRestaurant,
+  SiteContent,
 } from "./payload-types";
 export { CartProvider, useCart } from "./components/CartProvider";
 export type { CartItem } from "./components/CartProvider";

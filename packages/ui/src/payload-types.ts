@@ -79,6 +79,7 @@ export interface Config {
     restaurants: Restaurant;
     'site-content': SiteContent;
     videos: Video;
+    promotions: Promotion;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -98,6 +99,7 @@ export interface Config {
     restaurants: RestaurantsSelect<false> | RestaurantsSelect<true>;
     'site-content': SiteContentSelect<false> | SiteContentSelect<true>;
     videos: VideosSelect<false> | VideosSelect<true>;
+    promotions: PromotionsSelect<false> | PromotionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -505,6 +507,46 @@ export interface Video {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "promotions".
+ */
+export interface Promotion {
+  id: number;
+  restaurant?: ('my-restaurant' | 'verde-kitchen') | null;
+  /**
+   * Uncheck to hide this promotion
+   */
+  active?: boolean | null;
+  /**
+   * Optional banner image
+   */
+  image?: (number | null) | Media;
+  /**
+   * Show from this date (leave empty to show immediately)
+   */
+  startDate?: string | null;
+  /**
+   * Auto-hide after this date (leave empty to show indefinitely)
+   */
+  endDate?: string | null;
+  /**
+   * Days before re-showing after dismissal. 0 = never re-show.
+   */
+  dismissDays?: number | null;
+  title: string;
+  message?: string | null;
+  /**
+   * e.g. "Order Now"
+   */
+  ctaLabel?: string | null;
+  /**
+   * Link for the CTA button
+   */
+  ctaUrl?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -574,6 +616,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'videos';
         value: number | Video;
+      } | null)
+    | ({
+        relationTo: 'promotions';
+        value: number | Promotion;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -864,6 +910,24 @@ export interface VideosSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "promotions_select".
+ */
+export interface PromotionsSelect<T extends boolean = true> {
+  restaurant?: T;
+  active?: T;
+  image?: T;
+  startDate?: T;
+  endDate?: T;
+  dismissDays?: T;
+  title?: T;
+  message?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -17,6 +17,7 @@ export type {
   Section as PayloadSection,
   Table as PayloadTable,
   Restaurant as PayloadRestaurant,
+  SiteContent,
 } from "./payload-types";
 export { CartProvider, useCart } from "./components/CartProvider";
 export type { CartItem } from "./components/CartProvider";
@@ -25,3 +26,4 @@ export { CheckoutForm } from "./components/CheckoutForm";
 export type { OrderData } from "./components/CheckoutForm";
 export { LocaleLink } from "./components/LocaleLink";
 export { LanguageSelector } from "./components/LanguageSelector";
+export { PromotionPopup } from "./components/PromotionPopup";

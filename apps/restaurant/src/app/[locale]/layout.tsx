@@ -1,7 +1,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { Navbar, Footer, LanguageSelector } from "@repo/ui";
+import { Navbar, Footer, LanguageSelector, PromotionPopup } from "@repo/ui";
 import HeroHeader from "@/components/HeroHeader";
 import { CartShell } from "@/components/CartShell";
 import { restaurantConfig } from "@/config/restaurant";
@@ -54,8 +54,15 @@ export default async function LocaleLayout({ children, params }: Props) {
     ...(restaurantConfig.features.reservations ? [{ href: "/reservations", label: t("reservations") }] : []),
   ];
 
+  const cmsUrl = process.env.NEXT_PUBLIC_CMS_URL ?? "http://localhost:3002";
+
   return (
     <NextIntlClientProvider messages={messages}>
+      <PromotionPopup
+        restaurantId={restaurantConfig.id}
+        locale={locale}
+        cmsUrl={cmsUrl}
+      />
       <div className="app">
         {restaurantConfig.hero && <HeroHeader config={restaurantConfig.hero} />}
         <CartShell orderingEnabled={orderingEnabled}>

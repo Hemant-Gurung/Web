@@ -25,3 +25,4 @@ export { CheckoutForm } from "./components/CheckoutForm";
 export type { OrderData } from "./components/CheckoutForm";
 export { LocaleLink } from "./components/LocaleLink";
 export { LanguageSelector } from "./components/LanguageSelector";
+export { PromotionPopup } from "./components/PromotionPopup";

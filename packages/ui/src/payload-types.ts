@@ -299,10 +299,7 @@ export interface Table {
  */
 export interface Order {
   id: number;
-  /**
-   * Auto-populated from the app's API key
-   */
-  restaurant: 'my-restaurant' | 'verde-kitchen';
+  restaurant?: ('my-restaurant' | 'verde-kitchen') | null;
   type: 'takeaway' | 'eat-in';
   status: 'pending' | 'preparing' | 'ready' | 'completed' | 'cancelled';
   customer: {
@@ -316,6 +313,9 @@ export interface Order {
     quantity: number;
     id?: string | null;
   }[];
+  /**
+   * Auto-calculated from items
+   */
   total: number;
   tableNumber?: string | null;
   notes?: string | null;

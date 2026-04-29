@@ -6,10 +6,10 @@ import styles from "./PromotionPopup.module.css";
 export interface Promotion {
   id: number | string;
   title: string;
-  message: string;
+  message?: string | null;
   ctaLabel?: string | null;
   ctaUrl?: string | null;
-  image?: { url: string } | null;
+  image?: { url?: string | null } | null;
   dismissDays?: number | null;
   startDate?: string | null;
   endDate?: string | null;
@@ -25,7 +25,7 @@ export function PromotionPopup({ restaurantId, locale, cmsUrl }: Props) {
   const [promotion, setPromotion] = useState<Promotion | null>(null);
 
   useEffect(() => {
-    const url = `${cmsUrl}/api/promotions?restaurant=${restaurantId}&where[active][equals]=true&locale=${locale}&fallback-locale=en&limit=1`;
+    const url = `${cmsUrl}/api/promotions?restaurant=${restaurantId}&where[active][equals]=true&locale=${locale}&fallback-locale=en&depth=1&limit=1`;
 
     fetch(url)
       .then((res) => (res.ok ? res.json() : null))
@@ -66,16 +66,16 @@ export function PromotionPopup({ restaurantId, locale, cmsUrl }: Props) {
         <button className={styles.close} onClick={dismiss} aria-label="Close">✕</button>
 
         {promotion.image?.url && (
-          <img src={promotion.image.url} alt={promotion.title} className={styles.image} />
+          <img src={promotion.image.url ?? undefined} alt={promotion.title} className={styles.image} />
         )}
 
         <div className={styles.body}>
           <h2 className={styles.title}>{promotion.title}</h2>
-          <p className={styles.message}>{promotion.message}</p>
+          {promotion.message && <p className={styles.message}>{promotion.message}</p>}
 
-          {promotion.ctaLabel || promotion.ctaUrl && (
+          {promotion.ctaUrl && (
             <a href={promotion.ctaUrl} className={styles.cta} onClick={dismiss}>
-              {promotion.ctaLabel}
+              {promotion.ctaLabel ?? promotion.ctaUrl}
             </a>
           )}
         </div>

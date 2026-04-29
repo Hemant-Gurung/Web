@@ -20,8 +20,11 @@ function resolveImageUrl(image: PayloadMenuItem["image"]): string | undefined {
   const media = image as PayloadMedia;
   if (!media.url) return undefined;
   try {
-    const u = new URL(media.url);
-    u.hostname = new URL(CMS_URL).hostname;
+    // media.url may be relative (e.g. /media/foo.jpg) — resolve against CMS_URL
+    const base = CMS_URL.replace(/\/$/, "");
+    const absolute = media.url.startsWith("http") ? media.url : `${base}${media.url}`;
+    const u = new URL(absolute);
+    u.hostname = new URL(base).hostname;
     return u.toString();
   } catch {
     return media.url;
@@ -35,8 +38,8 @@ export default async function MenuPage({ params }: Props) {
   setRequestLocale(locale);
 
   try {
-    const catsParams = new URLSearchParams({ "where[restaurant][equals]": RESTAURANT_ID, sort: "order" });
-    const itemsParams = new URLSearchParams({ "where[restaurant][equals]": RESTAURANT_ID, sort: "order", limit: "200", depth: "2" });
+    const catsParams = new URLSearchParams({ "where[restaurant][equals]": RESTAURANT_ID, sort: "order", locale, "fallback-locale": "en" });
+    const itemsParams = new URLSearchParams({ "where[restaurant][equals]": RESTAURANT_ID, sort: "order", limit: "200", depth: "2", locale, "fallback-locale": "en" });
     const authHeaders: Record<string, string> = CMS_API_KEY ? { Authorization: `admins API-Key ${CMS_API_KEY}` } : {};
 
     const [catsRes, itemsRes, configRes] = await Promise.all([

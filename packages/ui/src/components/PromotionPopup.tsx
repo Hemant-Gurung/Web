@@ -73,7 +73,7 @@ export function PromotionPopup({ restaurantId, locale, cmsUrl }: Props) {
           <h2 className={styles.title}>{promotion.title}</h2>
           <p className={styles.message}>{promotion.message}</p>
 
-          {promotion.ctaLabel && promotion.ctaUrl && (
+          {promotion.ctaLabel || promotion.ctaUrl && (
             <a href={promotion.ctaUrl} className={styles.cta} onClick={dismiss}>
               {promotion.ctaLabel}
             </a>

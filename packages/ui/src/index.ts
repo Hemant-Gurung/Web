@@ -26,4 +26,6 @@ export { CheckoutForm } from "./components/CheckoutForm";
 export type { OrderData } from "./components/CheckoutForm";
 export { LocaleLink } from "./components/LocaleLink";
 export { LanguageSelector } from "./components/LanguageSelector";
+export { Tabs } from "./components/Tabs";
+export { TopBar } from "./components/TopBar";
 export { PromotionPopup } from "./components/PromotionPopup";

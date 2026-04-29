@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import styles from "./MenuPageClient.module.css";
 import { useCart } from "./CartProvider";
+import { Tabs } from "./Tabs";
 
 export interface MenuItem {
   name: string;
@@ -40,19 +41,7 @@ export function MenuPageClient({ categories, orderingEnabled = false }: Props) {
     <div className={styles.menuPage}>
       <h1 className={styles.title}>{t("title")}</h1>
 
-      <div className={styles.tabs} role="tablist">
-        {tabs.map((tab, i) => (
-          <button
-            key={`${tab}-${i}`}
-            role="tab"
-            aria-selected={activeCategory === tab}
-            className={`${styles.tab} ${activeCategory === tab ? styles.tabActive : ""}`}
-            onClick={() => setActiveCategory(tab)}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
+      <Tabs tabs={tabs} active={activeCategory} onChange={setActiveCategory} />
 
       <div className={styles.sections}>
         {visibleCategories.map((category, i) => (

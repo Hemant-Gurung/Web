@@ -30,7 +30,7 @@ export const myRestaurantConfig: RestaurantConfig = {
     ordering: true,
   },
   orderType: "both",
-  locales: ["en","nl"],
+  locales: ["en", "nl", "fr"],
   theme: {
     "--color-primary": "#d32f2f",
     "--color-primary-dark": "#b71c1c",

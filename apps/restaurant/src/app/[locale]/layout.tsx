@@ -1,7 +1,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { Navbar, Footer, LanguageSelector, PromotionPopup } from "@repo/ui";
+import { Navbar, Footer, LanguageSelector, PromotionPopup, TopBar } from "@repo/ui";
 import HeroHeader from "@/components/HeroHeader";
 import { CartShell } from "@/components/CartShell";
 import { restaurantConfig } from "@/config/restaurant";
@@ -63,6 +63,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         locale={locale}
         cmsUrl={cmsUrl}
       />
+      <TopBar />
       <div className="app">
         {restaurantConfig.hero && <HeroHeader config={restaurantConfig.hero} />}
         <CartShell orderingEnabled={orderingEnabled}>

@@ -1,0 +1,51 @@
+.hours {
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.hoursTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hoursGrid {
+  display: flex;
+  flex-direction: column;
+  max-width: 320px;
+  margin: 0 auto;
+  list-style: none;
+  padding: 0;
+}
+
+.hoursRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.9rem;
+}
+
+.hoursDay {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+.hoursTime {
+  color: #fff;
+  font-weight: 600;
+}
+
+.hoursClosed {
+  color: rgba(255, 255, 255, 0.35);
+  font-style: italic;
+}
+
+.hoursFallback {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}

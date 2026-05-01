@@ -1,0 +1,57 @@
+.section {
+  padding: 3rem 1rem 2.5rem;
+  text-align: center;
+  background: var(--color-opening-hours-bg, transparent);
+  border-top: 1px solid var(--color-border, rgba(255, 255, 255, 0.10));
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-opening-hours-title, rgba(255, 255, 255, 0.55));
+  margin-bottom: 1.25rem;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
+  font-size: 0.875rem;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.day {
+  color: var(--color-opening-hours-day, rgba(255, 255, 255, 0.55));
+  font-weight: 500;
+}
+
+.time {
+  color: var(--color-opening-hours-time, #fff);
+  font-weight: 600;
+}
+
+.closed {
+  color: var(--color-opening-hours-closed, rgba(255, 255, 255, 0.3));
+  font-style: italic;
+}
+
+.fallback {
+  color: var(--color-opening-hours-day, rgba(255, 255, 255, 0.55));
+  font-size: 0.9rem;
+}

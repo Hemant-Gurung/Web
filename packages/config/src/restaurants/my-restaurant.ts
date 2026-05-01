@@ -29,7 +29,7 @@ export const myRestaurantConfig: RestaurantConfig = {
     reservations: true,
     ordering: true,
   },
-  orderType: "both",
+  orderType: "takeaway",
   locales: ["en", "nl", "fr"],
   theme: {
     "--color-primary": "#d32f2f",

@@ -29,3 +29,5 @@ export { LanguageSelector } from "./components/LanguageSelector";
 export { Tabs } from "./components/Tabs";
 export { TopBar } from "./components/TopBar";
 export { PromotionPopup } from "./components/PromotionPopup";
+export { OpeningHours } from "./components/OpeningHours";
+export type { OpeningHoursEntry } from "./components/OpeningHours";

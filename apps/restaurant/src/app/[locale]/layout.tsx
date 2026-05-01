@@ -1,8 +1,9 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { Navbar, Footer, LanguageSelector, PromotionPopup, TopBar } from "@repo/ui";
+import { Navbar, Footer, LanguageSelector, PromotionPopup, TopBar, OpeningHours } from "@repo/ui";
 import HeroHeader from "@/components/HeroHeader";
+import { HomeOnly } from "@/components/HomeOnly";
 import { CartShell } from "@/components/CartShell";
 import { restaurantConfig } from "@/config/restaurant";
 import { routing } from "@/i18n/routing";
@@ -72,6 +73,12 @@ export default async function LocaleLayout({ children, params }: Props) {
               <LanguageSelector locales={restaurantConfig.locales} currentLocale={locale} />
             } />
             <main className="main">{children}</main>
+            <HomeOnly>
+              <OpeningHours
+                hours={cms?.openingHours ?? []}
+                fallback={restaurantConfig.contact.hours}
+              />
+            </HomeOnly>
             <Footer
               restaurantName={restaurantConfig.name}
               tagline={

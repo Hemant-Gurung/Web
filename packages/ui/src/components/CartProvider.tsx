@@ -13,6 +13,7 @@ interface CartContextValue {
   items: CartItem[];
   itemCount: number;
   total: number;
+  hydrated: boolean;
   addItem: (item: Omit<CartItem, "quantity">) => void;
   removeItem: (name: string) => void;
   updateQuantity: (name: string, quantity: number) => void;
@@ -25,17 +26,22 @@ const STORAGE_KEY = "cart";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [hydrated, setHydrated] = useState(false);
 
+  // Load from localStorage after mount — keeps server/client HTML in sync (both start with [])
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) setItems(JSON.parse(stored));
     } catch {}
+    setHydrated(true);
   }, []);
 
+  // Save to localStorage, but only after hydration to avoid overwriting with []
   useEffect(() => {
+    if (!hydrated) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items]);
+  }, [items, hydrated]);
 
   const addItem = useCallback((item: Omit<CartItem, "quantity">) => {
     setItems((prev) => {
@@ -70,7 +76,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <CartContext.Provider
-      value={{ items, itemCount, total, addItem, removeItem, updateQuantity, clearCart }}
+      value={{ items, itemCount, total, hydrated, addItem, removeItem, updateQuantity, clearCart }}
     >
       {children}
     </CartContext.Provider>

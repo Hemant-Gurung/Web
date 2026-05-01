@@ -8,6 +8,7 @@ export const verdeKitchenConfig: RestaurantConfig = {
     nl: "Vers. Eenvoudig. Voedzaam.",
     fr: "Frais. Simple. Nourrissant.",
   },
+  orderType: "takeaway",
   description: "Mediterranean-inspired dishes made from the freshest seasonal produce.",
   descriptionTranslations: {
     nl: "Mediterrane gerechten gemaakt van de meest verse seizoensproducten.",

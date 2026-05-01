@@ -31,3 +31,4 @@ export { TopBar } from "./components/TopBar";
 export { PromotionPopup } from "./components/PromotionPopup";
 export { OpeningHours } from "./components/OpeningHours";
 export type { OpeningHoursEntry } from "./components/OpeningHours";
+export { usePromotion } from "./hooks/usePromotion";

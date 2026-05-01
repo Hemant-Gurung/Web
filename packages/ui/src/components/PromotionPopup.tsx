@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { usePromotion } from "../hooks/usePromotion";
 import styles from "./PromotionPopup.module.css";
 
 export interface Promotion {
@@ -22,41 +22,7 @@ interface Props {
 }
 
 export function PromotionPopup({ restaurantId, locale, cmsUrl }: Props) {
-  const [promotion, setPromotion] = useState<Promotion | null>(null);
-
-  useEffect(() => {
-    const url = `${cmsUrl}/api/promotions?restaurant=${restaurantId}&where[active][equals]=true&locale=${locale}&fallback-locale=en&depth=1&limit=1`;
-
-    fetch(url)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        console.log("🚀 ~ PromotionPopup ~ data:", data);
-        const doc: Promotion | undefined = data?.docs?.[0];
-        if (!doc) return;
-
-        // Client-side date window check
-        const now = new Date();
-        if (doc.startDate && new Date(doc.startDate) > now) return;
-        if (doc.endDate && new Date(doc.endDate) < now) return;
-
-        // Client-side dismiss check
-        const key = `promo_dismissed_${restaurantId}_${doc.id}`;
-        const until = localStorage.getItem(key);
-        if (until && Date.now() < Number(until)) return;
-
-        console.log("🚀 ~ PromotionPopup ~ doc:", doc);
-        setPromotion(doc);
-      })
-      .catch(() => {});
-  }, [restaurantId, locale, cmsUrl]);
-
-  function dismiss() {
-    if (!promotion) return;
-    const key = `promo_dismissed_${restaurantId}_${promotion.id}`;
-    const days = promotion.dismissDays ?? 1;
-    localStorage.setItem(key, String(Date.now() + days * 24 * 60 * 60 * 1000));
-    setPromotion(null);
-  }
+  const { promotion, dismiss } = usePromotion({ restaurantId, locale, cmsUrl });
 
   if (!promotion) return null;
 

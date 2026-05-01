@@ -1,4 +1,5 @@
 import styles from "./OpeningHours.module.css";
+import { Clock } from "lucide-react";
 
 const DAY_LABELS: Record<string, string> = {
   monday: "Monday",
@@ -28,7 +29,10 @@ export function OpeningHours({ hours, title = "Opening Hours", fallback }: Props
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.title}>{title}</h2>
+      <h2 className={styles.title}>
+        <Clock size={16} style={{marginRight: "0.4rem", verticalAlign: "middle"}} />
+        {title}
+      </h2>
       {hours.length > 0 ? (
         <ul className={styles.list}>
           {hours.map(({ day, open, close, closed }) => (

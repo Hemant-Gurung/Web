@@ -63,6 +63,10 @@ export interface RestaurantConfig {
    * Keys must be valid CSS custom property names (start with --).
    */
   theme: Record<string, string>;
+  /** Google Fonts or other external font URL to inject as <link> in <head> */
+  fontUrl?: string;
+  /** Navbar layout variant. "drawer" = burger menu (default). "topbar" = horizontal fixed bar. */
+  navbarVariant?: "drawer" | "topbar";
   /** Present = show hero header image strip. Absent = no hero. */
   hero?: HeroConfig;
   about: AboutConfig;

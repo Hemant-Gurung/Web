@@ -69,7 +69,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         {restaurantConfig.hero && <HeroHeader config={restaurantConfig.hero} />}
         <CartShell orderingEnabled={orderingEnabled}>
           <div className="layout">
-            <Navbar links={navLinks} locale={locale} languageSelector={
+            <Navbar links={navLinks} locale={locale} variant={restaurantConfig.navbarVariant ?? "drawer"} languageSelector={
               <LanguageSelector locales={restaurantConfig.locales} currentLocale={locale} />
             } />
             <main className="main">{children}</main>

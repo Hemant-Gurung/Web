@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styles from "./ContactForm.module.css";
+import { Send, CheckCircle } from "lucide-react";
 
 export function ContactForm() {
   const [name, setName] = useState("");
@@ -18,7 +19,7 @@ export function ContactForm() {
   if (sent) {
     return (
       <div className={styles.sentMsg}>
-        <span>✅</span>
+        <CheckCircle size={40} color="#4caf50" />
         <p>Thanks! We'll get back to you soon.</p>
         <button onClick={() => setSent(false)} className={styles.sendAgain}>
           Send another message
@@ -44,7 +45,7 @@ export function ContactForm() {
         <textarea placeholder="How can we help?" value={message}
           onChange={(e) => setMessage(e.target.value)} required />
       </label>
-      <button type="submit">Send Message</button>
+      <button type="submit"><><Send size={15} style={{marginRight: "0.4rem"}} />Send Message</></button>
     </form>
   );
 }

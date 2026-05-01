@@ -98,3 +98,58 @@
   outline: 2px solid var(--color-primary, #d32f2f);
   outline-offset: -2px;
 }
+
+/* ── Topbar variant ── */
+.ui-nav-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: var(--color-footer-bg, #111);
+  border-bottom: 1px solid var(--color-border, rgba(255,255,255,0.08));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
+  padding: 0 1.5rem;
+}
+
+.ui-nav-topbar-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.ui-nav-topbar-item {
+  padding: 0.5rem 1rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.ui-nav-topbar-item:hover,
+.ui-nav-topbar-active {
+  color: #fff;
+  background: var(--color-surface, rgba(255,255,255,0.07));
+}
+
+.ui-nav-topbar-active {
+  color: var(--color-primary, #d32f2f) !important;
+}
+
+/* Inside topbar the lang selector is inline, not fixed */
+.ui-nav-topbar .ui-nav-lang {
+  position: relative;
+  top: auto;
+  right: auto;
+  margin-left: auto;
+}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import styles from "./ReservationForm.module.css";
+import { CalendarCheck, Loader2 } from "lucide-react";
 
 type Step = "form" | "success";
 
@@ -177,7 +178,7 @@ export function ReservationForm({ onSubmit }: ReservationFormProps) {
         className={styles.submitBtn}
         disabled={!name || !email || !date || !time || loading}
       >
-        {loading ? "Submitting…" : "Confirm Reservation"}
+        {loading ? <><Loader2 size={15} style={{marginRight: "0.4rem", animation: "spin 1s linear infinite"}} />Submitting…</> : <><CalendarCheck size={15} style={{marginRight: "0.4rem"}} />Confirm Reservation</>}
       </button>
     </form>
   );

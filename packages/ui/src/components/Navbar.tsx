@@ -16,9 +16,10 @@ interface NavbarProps {
   links: NavLink[];
   locale?: string;
   languageSelector?: ReactNode;
+  variant?: "drawer" | "topbar";
 }
 
-export function Navbar({ links, languageSelector }: NavbarProps) {
+export function Navbar({ links, languageSelector, variant = "drawer" }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const locale = useLocale();
   const pathname = usePathname();
@@ -45,6 +46,27 @@ export function Navbar({ links, languageSelector }: NavbarProps) {
         window.scrollTo({ top: 0 });
       }, 80);
     }
+  }
+
+  if (variant === "topbar") {
+    return (
+      <nav className="ui-nav-topbar">
+        <ul className="ui-nav-topbar-links">
+          {links.map(({ href, label }) => (
+            <li key={href}>
+              <a
+                className={`ui-nav-topbar-item${isActive(href) ? " ui-nav-topbar-active" : ""}`}
+                href={localizedHref(href)}
+                onClick={(e) => handleClick(e, href)}
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        {languageSelector && <div className="ui-nav-lang">{languageSelector}</div>}
+      </nav>
+    );
   }
 
   return (

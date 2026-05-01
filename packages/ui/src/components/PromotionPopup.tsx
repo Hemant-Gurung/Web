@@ -2,6 +2,7 @@
 
 import { usePromotion } from "../hooks/usePromotion";
 import styles from "./PromotionPopup.module.css";
+import { X } from "lucide-react";
 
 export interface Promotion {
   id: number | string;
@@ -29,7 +30,7 @@ export function PromotionPopup({ restaurantId, locale, cmsUrl }: Props) {
   return (
     <div className={styles.backdrop} onClick={dismiss} role="dialog" aria-modal="true">
       <div className={styles.card} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.close} onClick={dismiss} aria-label="Close">✕</button>
+        <button className={styles.close} onClick={dismiss} aria-label="Close"><X size={16} /></button>
 
         {promotion.image?.url && (
           <img src={promotion.image.url ?? undefined} alt={promotion.title} className={styles.image} />

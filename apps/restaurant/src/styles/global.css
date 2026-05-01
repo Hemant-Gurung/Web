@@ -13,7 +13,7 @@ body {
 
 /* ── Base ── */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: var(--font-family, system-ui, sans-serif);
   line-height: 1.6;
   color: #ffffff;
   background-color: var(--color-body-bg, #444444);

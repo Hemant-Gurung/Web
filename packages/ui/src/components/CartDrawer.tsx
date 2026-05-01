@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useCart } from "./CartProvider";
 import { LocaleLink } from "./LocaleLink";
 import styles from "./CartDrawer.module.css";
+import { ShoppingCart, X, Plus, Minus, Trash2 } from "lucide-react";
 
 interface Props {
   isOpen: boolean;
@@ -20,7 +21,7 @@ export function CartDrawer({ isOpen, onClose }: Props) {
       <aside className={`${styles.drawer} ${isOpen ? styles.open : ""}`}>
         <div className={styles.header}>
           <h2 className={styles.title}>{t("title")}</h2>
-          <button className={styles.closeBtn} onClick={onClose} aria-label={t("close")}>✕</button>
+          <button className={styles.closeBtn} onClick={onClose} aria-label={t("close")}><X size={18} /></button>
         </div>
 
         {items.length === 0 ? (
@@ -35,10 +36,10 @@ export function CartDrawer({ isOpen, onClose }: Props) {
                     <span className={styles.itemPrice}>${(item.price * item.quantity).toFixed(2)}</span>
                   </div>
                   <div className={styles.itemControls}>
-                    <button className={styles.qtyBtn} onClick={() => updateQuantity(item.name, item.quantity - 1)}>−</button>
+                    <button className={styles.qtyBtn} onClick={() => updateQuantity(item.name, item.quantity - 1)}><Minus size={14} /></button>
                     <span className={styles.qtyCount}>{item.quantity}</span>
-                    <button className={styles.qtyBtn} onClick={() => updateQuantity(item.name, item.quantity + 1)}>+</button>
-                    <button className={styles.removeBtn} onClick={() => removeItem(item.name)}>✕</button>
+                    <button className={styles.qtyBtn} onClick={() => updateQuantity(item.name, item.quantity + 1)}><Plus size={14} /></button>
+                    <button className={styles.removeBtn} onClick={() => removeItem(item.name)}><Trash2 size={14} /></button>
                   </div>
                 </li>
               ))}
@@ -65,7 +66,7 @@ export function CartButton({ onClick }: { onClick: () => void }) {
 
   return (
     <button className={styles.cartButton} onClick={onClick} aria-label="Open cart">
-      🛒
+      <ShoppingCart size={22} />
       {itemCount > 0 && <span className={styles.badge}>{itemCount}</span>}
     </button>
   );

@@ -30,6 +30,8 @@ export const verdeKitchenConfig: RestaurantConfig = {
     reservations: false, // walk-ins only
   },
   locales: ["en", "nl", "fr"],
+  fontUrl: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap",
+  navbarVariant: "topbar",
   theme: {
     "--color-primary": "#2e7d32",
     "--color-primary-dark": "#1b5e20",
@@ -43,6 +45,7 @@ export const verdeKitchenConfig: RestaurantConfig = {
     "--color-border": "rgba(255, 255, 255, 0.10)",
     "--color-footer-bg": "#0d1a0f",
     "--color-body-bg": "#3d3530",
+    "--font-family": "'Plus Jakarta Sans', sans-serif",
   },
   // No hero — verde-kitchen has no image strip
   about: {

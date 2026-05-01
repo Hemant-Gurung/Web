@@ -6,6 +6,7 @@ import { useCart } from "./CartProvider";
 import { LocaleLink } from "./LocaleLink";
 import styles from "./CheckoutForm.module.css";
 import type { CartItem } from "./CartProvider";
+import { ShoppingBag, UtensilsCrossed, Truck, CreditCard, Loader2 } from "lucide-react";
 
 export interface OrderData {
   type: "takeaway" | "eat-in" | "delivery";
@@ -113,7 +114,7 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
                 className={`${styles.typeBtn} ${type === "takeaway" ? styles.typeActive : ""}`}
                 onClick={() => setType("takeaway")}
               >
-                {t("takeaway")}
+                <ShoppingBag size={15} style={{marginRight: "0.35rem"}} />{t("takeaway")}
               </button>
               {orderType === "both" ? (
                 <button
@@ -121,7 +122,7 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
                   className={`${styles.typeBtn} ${type === "eat-in" ? styles.typeActive : ""}`}
                   onClick={() => setType("eat-in")}
                 >
-                  {t("eatIn")}
+                  <UtensilsCrossed size={15} style={{marginRight: "0.35rem"}} />{t("eatIn")}
                 </button>
               ) : (
                 <button
@@ -129,7 +130,7 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
                   className={`${styles.typeBtn} ${type === "delivery" ? styles.typeActive : ""}`}
                   onClick={() => setType("delivery")}
                 >
-                  {t("delivery")}
+                  <Truck size={15} style={{marginRight: "0.35rem"}} />{t("delivery")}
                 </button>
               )}
             </div>
@@ -244,7 +245,7 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
           {error && <p className={styles.error}>{error}</p>}
 
           <button type="submit" className={styles.submitBtn} disabled={loading}>
-            {loading ? t("redirecting") : t("pay", { amount: `$${total.toFixed(2)}` })}
+            {loading ? <><Loader2 size={15} style={{marginRight: "0.4rem", animation: "spin 1s linear infinite"}} />{t("redirecting")}</> : <><CreditCard size={15} style={{marginRight: "0.4rem"}} />{t("pay", { amount: `$${total.toFixed(2)}` })}</>}
           </button>
         </form>
 

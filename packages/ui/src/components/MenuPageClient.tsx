@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import styles from "./MenuPageClient.module.css";
 import { useCart } from "./CartProvider";
 import { Tabs } from "./Tabs";
+import { Plus, Minus, ShoppingCart } from "lucide-react";
 
 export interface MenuItem {
   name: string;
@@ -74,14 +75,14 @@ export function MenuPageClient({ categories, orderingEnabled = false }: Props) {
                             className={styles.qtyBtn}
                             onClick={() => updateQuantity(item.name, cartItem.quantity - 1)}
                           >
-                            −
+                            <Minus size={14} />
                           </button>
                           <span className={styles.qtyCount}>{cartItem.quantity}</span>
                           <button
                             className={styles.qtyBtn}
                             onClick={() => updateQuantity(item.name, cartItem.quantity + 1)}
                           >
-                            +
+                            <Plus size={14} />
                           </button>
                         </div>
                       ) : (
@@ -89,7 +90,7 @@ export function MenuPageClient({ categories, orderingEnabled = false }: Props) {
                           className={styles.orderBtn}
                           onClick={() => addItem({ name: item.name, price: item.price, image: item.image })}
                         >
-                          {t("add")}
+                          <ShoppingCart size={14} style={{marginRight: "0.3rem"}} />{t("add")}
                         </button>
                       ))}
                     </div>

@@ -2,6 +2,7 @@
 
 import { LocaleLink } from "./LocaleLink";
 import "./Footer.css";
+import { Utensils, ExternalLink } from "lucide-react";
 
 interface FooterLink {
   href: string;
@@ -38,18 +39,13 @@ export function Footer({
     <footer className="ui-footer">
       <div className="ui-footer-inner">
         <div className="ui-footer-brand">
-          <span className="ui-footer-logo">🍴 {restaurantName}</span>
+          <span className="ui-footer-logo"><Utensils size={16} style={{marginRight: "0.4rem", verticalAlign: "middle"}} />{restaurantName}</span>
           <p className="ui-footer-tagline">{tagline}</p>
           {socialLinks && socialLinks.length > 0 && (
             <div className="ui-footer-social">
               {socialLinks.map(({ platform, url }) => (
-                <a
-                  key={platform}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ui-footer-social-link"
-                >
+                <a key={platform} href={url} target="_blank" rel="noopener noreferrer" className="ui-footer-social-link">
+                  <ExternalLink size={12} style={{marginRight: "0.3rem", verticalAlign: "middle"}} />
                   {SOCIAL_LABELS[platform] ?? platform}
                 </a>
               ))}

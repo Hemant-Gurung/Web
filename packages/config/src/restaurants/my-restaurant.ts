@@ -31,6 +31,7 @@ export const myRestaurantConfig: RestaurantConfig = {
   },
   orderType: "takeaway",
   locales: ["en", "nl", "fr"],
+  fontUrl: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;600&display=swap",
   theme: {
     "--color-primary": "#d32f2f",
     "--color-primary-dark": "#b71c1c",
@@ -44,6 +45,8 @@ export const myRestaurantConfig: RestaurantConfig = {
     "--color-border": "rgba(255, 255, 255, 0.10)",
     "--color-footer-bg": "#180e0e",
     "--color-body-bg": "#444444",
+    "--font-family": "'Lato', sans-serif",
+    "--font-family-heading": "'Playfair Display', serif",
   },
   hero: {
     logoSrc: "/my-restaurant/logo.png",

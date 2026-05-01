@@ -30,6 +30,13 @@
   gap: 0.5rem;
 }
 
+.scheduleToggle {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--color-border, rgba(255,255,255,0.08));
+}
+
 .typeBtn {
   flex: 1;
   padding: 0.65rem 1rem;

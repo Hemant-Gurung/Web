@@ -6,12 +6,13 @@ import { useCart } from "./CartProvider";
 import { LocaleLink } from "./LocaleLink";
 import styles from "./CheckoutForm.module.css";
 import type { CartItem } from "./CartProvider";
-import { ShoppingBag, UtensilsCrossed, Truck, CreditCard, Loader2 } from "lucide-react";
+import { ShoppingBag, UtensilsCrossed, Truck, CreditCard, Loader2, Clock, CalendarDays } from "lucide-react";
 
 export interface OrderData {
   type: "takeaway" | "eat-in" | "delivery";
   tableNumber?: string;
   pickupTime?: string;
+  scheduledFor?: string;
   deliveryStreet?: string;
   deliveryCity?: string;
   deliveryPostalCode?: string;
@@ -31,7 +32,6 @@ interface Props {
 function getPickupSlots(): string[] {
   const slots: string[] = [];
   const now = new Date();
-  // Round up to next 15 min, start 15 min from now
   const start = new Date(now);
   start.setMinutes(Math.ceil((now.getMinutes() + 15) / 15) * 15, 0, 0);
   for (let i = 0; i < 8; i++) {
@@ -39,6 +39,22 @@ function getPickupSlots(): string[] {
     slots.push(t.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
   }
   return slots;
+}
+
+function getFutureTimeSlots(): string[] {
+  const slots: string[] = [];
+  for (let h = 11; h <= 21; h++) {
+    for (const m of [0, 30]) {
+      const hh = String(h).padStart(2, "0");
+      const mm = String(m).padStart(2, "0");
+      slots.push(`${hh}:${mm}`);
+    }
+  }
+  return slots;
+}
+
+function getTodayString(): string {
+  return new Date().toISOString().split("T")[0];
 }
 
 export function CheckoutForm({ orderType, onSubmit }: Props) {
@@ -52,6 +68,9 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
   const [email, setEmail] = useState("");
   const [tableNumber, setTableNumber] = useState("");
   const [pickupTime, setPickupTime] = useState("asap");
+  const [scheduleForLater, setScheduleForLater] = useState(false);
+  const [scheduleDate, setScheduleDate] = useState("");
+  const [scheduleTime, setScheduleTime] = useState("11:00");
   const [deliveryStreet, setDeliveryStreet] = useState("");
   const [deliveryCity, setDeliveryCity] = useState("");
   const [deliveryPostalCode, setDeliveryPostalCode] = useState("");
@@ -61,6 +80,8 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
   const [loading, setLoading] = useState(false);
 
   const pickupSlots = useMemo(() => getPickupSlots(), []);
+  const futureTimeSlots = useMemo(() => getFutureTimeSlots(), []);
+  const today = useMemo(() => getTodayString(), []);
 
   if (!hydrated) return <div className={styles.page} />;
 
@@ -79,13 +100,18 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
     setError("");
     setLoading(true);
     try {
+      const scheduledFor = scheduleForLater && scheduleDate
+        ? `${scheduleDate}T${scheduleTime}:00`
+        : undefined;
+
       const { url } = await onSubmit({
         type,
         name,
         phone,
         email,
         tableNumber,
-        pickupTime: type === "takeaway" ? pickupTime : undefined,
+        pickupTime: type === "takeaway" && !scheduleForLater ? pickupTime : undefined,
+        scheduledFor,
         deliveryStreet: type === "delivery" ? deliveryStreet : undefined,
         deliveryCity: type === "delivery" ? deliveryCity : undefined,
         deliveryPostalCode: type === "delivery" ? deliveryPostalCode : undefined,
@@ -147,7 +173,7 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
             </div>
           )}
 
-          {type === "takeaway" && (
+          {type === "takeaway" && !scheduleForLater && (
             <div className={styles.field}>
               <label>{t("pickupTime")}</label>
               <select value={pickupTime} onChange={(e) => setPickupTime(e.target.value)}>
@@ -156,6 +182,48 @@ export function CheckoutForm({ orderType, onSubmit }: Props) {
                   <option key={slot} value={slot}>{slot}</option>
                 ))}
               </select>
+            </div>
+          )}
+
+          {type !== "eat-in" && (
+            <div className={styles.scheduleToggle}>
+              <button
+                type="button"
+                className={`${styles.typeBtn} ${!scheduleForLater ? styles.typeActive : ""}`}
+                onClick={() => setScheduleForLater(false)}
+              >
+                <Clock size={14} style={{marginRight: "0.35rem"}} />{t("scheduleNow")}
+              </button>
+              <button
+                type="button"
+                className={`${styles.typeBtn} ${scheduleForLater ? styles.typeActive : ""}`}
+                onClick={() => setScheduleForLater(true)}
+              >
+                <CalendarDays size={14} style={{marginRight: "0.35rem"}} />{t("scheduleLater")}
+              </button>
+            </div>
+          )}
+
+          {type !== "eat-in" && scheduleForLater && (
+            <div className={styles.fieldRow}>
+              <div className={styles.field}>
+                <label>{t("scheduleDate")}</label>
+                <input
+                  type="date"
+                  required
+                  min={today}
+                  value={scheduleDate}
+                  onChange={(e) => setScheduleDate(e.target.value)}
+                />
+              </div>
+              <div className={styles.field}>
+                <label>{t("scheduleTime")}</label>
+                <select value={scheduleTime} onChange={(e) => setScheduleTime(e.target.value)}>
+                  {futureTimeSlots.map((slot) => (
+                    <option key={slot} value={slot}>{slot}</option>
+                  ))}
+                </select>
+              </div>
             </div>
           )}
 

@@ -28,6 +28,14 @@ export async function submitOrder(data: OrderData): Promise<{ url: string }> {
     successUrl: `${baseUrl}/order/success?session={CHECKOUT_SESSION_ID}`,
     cancelUrl: `${baseUrl}/menu`,
     tableNumber: data.tableNumber || undefined,
+    pickupTime: data.pickupTime || undefined,
+    scheduledFor: data.scheduledFor || undefined,
+    delivery: data.type === "delivery" ? {
+      street: data.deliveryStreet,
+      city: data.deliveryCity,
+      postalCode: data.deliveryPostalCode,
+      instructions: data.deliveryInstructions || undefined,
+    } : undefined,
     notes: data.notes || undefined,
   };
   console.log("[checkout] sending to CMS:", CMS_URL, JSON.stringify(payload));
